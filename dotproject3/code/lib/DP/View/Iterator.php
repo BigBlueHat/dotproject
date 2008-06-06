@@ -11,7 +11,7 @@
  * @version 3.0 alpha
  *
  */
-class DP_View_Iterator {
+class DP_View_Iterator implements DP_View_Notification_Interface {
 	/**
 	 * @var array $views Collection of view objects.
 	 */
@@ -138,5 +138,14 @@ class DP_View_Iterator {
 		return $output;
 	}
 	
+	// From DP_View_Notification_Interface
+	
+	public function viewWillRender(Zend_View $view) {
+		foreach ($this->views as $v) {
+			if ($v instanceof DP_View_Notification_Interface) {
+				$v->viewWillRender($view);
+			}
+		}
+	}
 }
 ?>

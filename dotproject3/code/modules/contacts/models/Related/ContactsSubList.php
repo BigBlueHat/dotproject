@@ -44,14 +44,26 @@ class ContactsSubList implements DP_Related_Handler {
 		
 		$contacts_index->addModifier($parent_filter);
 
+		$contacts_pager = DP_View_Factory::getPagerView('dp-contacts-sublist-pager');
+		$contacts_pager->setItemsPerPage(30);
+		$contacts_pager->setUrlPrefix($this_url);
+		$contacts_pager->setPersistent(false);
+		$contacts_pager->align = 'center';
+		
+
+		$contacts_index->addModifier($contacts_pager->getPager());
+		
 		$contacts_sublist = DP_View_Factory::getListView('dp-contacts-sublist-view');
 
+		$contacts_sublist->add($contacts_pager, DP_View::APPEND);
 		$contacts_sublist->row_iterator->addRow(
-								Array(new DP_View_Cell_ObjectLink('contact_id','contact_order_by', '/contacts/view/object/id/'))
+								Array(new DP_View_Cell_ObjectSelect('contact_id', Array('width'=>'20px', 'align'=>'center')),
+										 new DP_View_Cell_ObjectLink('contact_id','contact_order_by', '/contacts/view/object/id/'))
 											);
 		
 		$contacts_sublist->setDataSource($contacts_index);
-		$contacts_sublist->setColumnHeaders(Array('contact_order_by'=>'Contact Name'));
+		$contacts_sublist->setColumnHeaders(Array('contact_id'=>'X', 
+																			'contact_order_by'=>'Contact Name'));
 		$contacts_sublist->width = '100%';
 		
 		return $contacts_sublist;

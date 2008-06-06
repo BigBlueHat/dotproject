@@ -11,19 +11,31 @@ class DP_View_ObjectSelectTools extends DP_View_Stateful {
 	/**
 	 * @var $checkbox_name HTML name attribute of associated checkbox instance.
 	 */
-	protected $checkbox_name;
+	protected $checkbox_name;	
 	/**
-	 * @var $tbl_id HTML ID attribute of table containing list items to be selected.
+	 * @var string $obj_key Primary key of the object to be selected
 	 */
-	protected $tbl_id;
+	protected $obj_key;
+	/**
+	 * @var string $list_view_id ID of the list view containing the selection objects.
+	 */
+	protected $list_view_id;
+	
+	protected $update_objects;
+	protected $update_action;
+	
+    static $ACTION_DELETE = 1;
 	
 	/**
 	 * DP_View_ObjectSelectTools constructor
 	 */
-	public function __construct($id, $tbl_id) {
+	public function __construct($id, $list_view_id, $obj_key) {
 		parent::__construct($id);
-		
-		$this->tbl_id = $tbl_id;
+
+		$this->obj_key = $obj_key;
+		$this->list_view_id = $list_view_id;
+		$this->update_objects = Array();
+		$this->update_action = 0;
 	}
 	
 	/**
@@ -34,10 +46,11 @@ class DP_View_ObjectSelectTools extends DP_View_Stateful {
 	private function _renderSelectionChanger() {
 		$chk_name = "";
 		
-		$output = "Selection:&nbsp;&nbsp;";
-		$output .= '<a href="javascript:dpselection.selectAll(\''.$this->tbl_id.'\');">All</a>&nbsp;&nbsp;';
-		$output .= '<a href="javascript:dpselection.selectNone(\''.$this->tbl_id.'\');">None</a>&nbsp;&nbsp;';
-		$output .= '<a href="javascript:dpselection.selectInvert(\''.$this->tbl_id.'\');">Invert</a>&nbsp;&nbsp;';
+		$output = "";
+		$output .= '<input type="hidden" name="view_id" value="'.$this->id().'" />';
+		$output .= '<button type="button" onClick="javascript:dpselection.selectAll(\''.$this->list_view_id.'\');">Select All</button>';
+		$output .= '<button type="button" onClick="javascript:dpselection.selectNone(\''.$this->list_view_id.'\');">Select None</button>';
+		$output .= '<button type="button" onClick="javascript:dpselection.selectInvert(\''.$this->list_view_id.'\');">Invert Selection</button>';
 		
 		return $output;
 	}
@@ -50,8 +63,10 @@ class DP_View_ObjectSelectTools extends DP_View_Stateful {
 	private function _renderSelectionDelete() {
 		$chk_name = "";
 		
+		// TODO internationalisation
 		$output = "";
-		$output .= '<a href="javascript:deleteSelected(\''.$this->tbl_id.'\');">Delete selected</a>';
+		$output .= '<input type="hidden" id="select-delete" name="'.$this->id().'-delete" value="0" />';
+		$output .= '<button type="button" onClick="javascript:dpselection.delete(\''.$this->list_view_id.'\');">Delete selected</button>';
 		
 		return $output;
 	}
@@ -74,11 +89,38 @@ class DP_View_ObjectSelectTools extends DP_View_Stateful {
 	 * @param string $id_key ID to use for the cell view constructor.
 	 * @return Instance of DP_View_Cell_ObjectSelected
 	 */
-	public function makeSelectCellView($id_key) {
-		$this->checkbox_id = $id_key;
-		$this->checkbox_name = 'chk-'.$id_key;
+	public function makeSelectCellView() {
+		$this->checkbox_id = $this->obj_key;
+		$this->checkbox_name = 'chk-'.$this->obj_key;
 		
-		return new DP_View_Cell_ObjectSelect($id_key);
+		return new DP_View_Cell_ObjectSelect($this->checkbox_id, Array('width'=>'20px', 'align'=>'center'));
+	}
+	
+	/**
+	 * Check to see whether selected objects need to be updated/changed.
+	 * 
+	 * @return bool true if objects need to be updated
+	 */
+	public function objectsChanged() {
+		if (count($this->update_objects) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Make the changes to the selected objects.
+	 *
+	 * @param Zend_Db_Table $tbl Table class of the objects to delete
+	 */
+	public function updateObjects(Zend_Db_Table $tbl) {
+		if ($this->update_action == DP_View_ObjectSelectTools::$ACTION_DELETE) {
+			foreach ($this->update_objects as $obj) {
+				$where = $tbl->getAdapter()->quoteInto($this->obj_key.' = ?', $obj);
+				$tbl->delete($where);
+			}
+		}
 	}
 	
 	/**
@@ -93,6 +135,24 @@ class DP_View_ObjectSelectTools extends DP_View_Stateful {
 		$output .= $this->_renderSelectionDelete();
 
 		return $output;
+	}
+	
+	/**
+	 * Update the state of this view from server request variables
+	 * 
+	 * @param mixed $request Server request object.
+	 */
+	public function updateStateFromServer($request) {
+		if ($request->view_id == $this->id()) {
+			//Zend_Debug::dump($request->getParam($this->id().'-delete'));
+			if ($request->getParam($this->id().'-delete') == '1') {
+				// Delete selection
+				$this->update_objects = $request->getParam($this->checkbox_name);
+				$this->update_action = DP_View_ObjectSelectTools::$ACTION_DELETE;
+			}
+		}
+		
+		$this->updateChildrenFromServer($request);
 	}
 	
 }

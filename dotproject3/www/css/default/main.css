@@ -283,7 +283,7 @@ table.dp-view-list TH {
 	text-align:center;
 }
 
-table.dp-view-list td {
+table.dp-view-list tr {
 	background-color: #ffffff;
 }
 

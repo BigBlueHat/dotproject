@@ -118,7 +118,6 @@ class DP_View_List extends DP_View_Stateful {
 	 * @param Zend_View $view The view object that is about to be rendered.
 	 */
 	public function viewWillRender($view) {
-		Zend_Debug::dump("Listview notified: view will render");
 		$this->row_iterator->viewWillRender($view); // Allows row iterator to add javascript for cells.
 		$this->notifyChildrenWillRender($view);
 	}
@@ -132,9 +131,11 @@ class DP_View_List extends DP_View_Stateful {
 		// Notify datasource of our intention to render
 		$this->src->clientWillRender();
 		
-		$output = "";
+		// TODO - remove hardcoded action
+		$output = "<form id=\"".$this->id()."-form\" name=\"".$this->id()."\" action=\"?\" method=\"POST\">";
 		$output .= $this->renderChildren(DP_View::PREPEND);
 		
+		// TODO - transfer element attributes to style sheet
 		$output .= "<table class=\"dp-view-list\" id=\"".$this->id()."\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
 		
 		foreach ($this->column_headers as $fname => $hdr) {
@@ -144,6 +145,7 @@ class DP_View_List extends DP_View_Stateful {
 		$this->row_iterator->setDataSource($this->src);
 		
 		if ($this->row_iterator->isDone()) {
+			// TODO - add translation object to DP_View_List
 			$output .= '<tr><td colspan="'.$this->columnCount().'">No records were found matching your query.</td></tr>';
 		} else {	
 			while (!$this->row_iterator->isDone()) {
@@ -152,7 +154,7 @@ class DP_View_List extends DP_View_Stateful {
 				$this->row_iterator->next();
 			}
 		}
-		$output .= "</table>\n";
+		$output .= "</table></form>\n";
 		$output .= $this->renderChildren(DP_View::APPEND);		
 		return $output;
 	}

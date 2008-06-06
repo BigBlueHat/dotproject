@@ -41,9 +41,13 @@ class Companies_IndexController extends DP_Controller_Action
 		// @todo - find a way to autoload index.
 		$this->_helper->RequireModel('Index');
 
+		// TODO - temporary workaround for bypassing DP_Query
+		$db = DP_Config::getDB();
+		Zend_Db_Table_Abstract::setDefaultAdapter($db);
+			
 		$AppUI = DP_AppUI::getInstance();
 		$AppUI->savePlace();
-		$perms =& $AppUI->acl();
+		//$perms =& $AppUI->acl();
 		
 		// load the company types
 		$types = DP_Config::getSysVal( 'CompanyType' );
@@ -79,7 +83,7 @@ class Companies_IndexController extends DP_Controller_Action
 		$new_btn->button->onClick = "location = '/companies/edit/new'";
 		
 		// Create selection tools
-		$select_tools = new DP_View_ObjectSelectTools('dp-companies-selection', $list_view_id);
+		$select_tools = new DP_View_ObjectSelectTools('dp-companies-selection', $list_view_id, 'company_id');
 		
 		// Add buttons to horizontal box
 		$btn_hbox = new DP_View_Hbox('dp-companies-hbox');
@@ -95,7 +99,7 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		// Access the default row iterator, you can set your own if preferred
 		$companies_list_view->row_iterator->addRow(
-								Array(new DP_View_Cell_ObjectSelect('company_id', Array('width'=>'20px', 'align'=>'center')),
+								Array($select_tools->makeSelectCellView(),
 									  new DP_View_Cell_ObjectLink('company_id','company_name', '/companies/view/object/id/'),
 									  new DP_View_Cell('company_projects_active', Array('width'=>'120px', 'align'=>'center')),
 								      new DP_View_Cell('company_projects_inactive', Array('width'=>'120px', 'align'=>'center')),
@@ -109,7 +113,7 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		$companies_tab_view->add($companies_list_view, 'All Companies');
 		// Use the same list view reference for every tab in GET/POST mode.
-		foreach ($types as $type_index => $company_type) {
+		foreach ($types as $company_type) {
 			$companies_tab_view->add($companies_list_view, $company_type);
 		}
 
@@ -121,13 +125,16 @@ class Companies_IndexController extends DP_Controller_Action
 		// Attach the companies index dynamic list to all of the filtering/sorting elements		
 		$companies_index->addModifier($companies_list_view->getSort());
 		$companies_index->addModifier($company_search_view->getFilter());
-
 		$companies_index->addModifier($company_list_pager->getPager());		
 		
 		// Update the view hierarchy with the request object.
 		// (request object is passed down the hierarchy).
 		$companies_tab_view->updateStateFromServer($this->getRequest());
 
+		if ($select_tools->objectsChanged()) {
+			$select_tools->updateObjects(new Db_Table_Companies());
+		}
+		
 		// @todo Better way of determining Tab to Filter mapping.
 		// Perhaps an array of tab indexes to filter rules.
 		$types_keys = array_keys($types);
@@ -152,6 +159,22 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		// TODO - Make root level container for all DP_Views
 		$this->view->main = $companies_tab_view;
+	}
+	
+	
+	/**
+	 * This method will be used to generate a json representation of the companies index. For use with the contact editor etc.
+	 * 
+	 * @todo Implement this
+	 */
+	public function jsonAction() {
+		
+		$data = Array(
+			"company1",
+			"company2"
+		);
+
+		$this->_helper->autoCompleteDojo($data);
 	}
 }
 ?>

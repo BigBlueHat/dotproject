@@ -27,11 +27,9 @@ class Contacts_EditController extends Zend_Controller_Action {
 		
 		$contact_id = $this->getRequest()->id;
 
-
 		$form_definition = $this->_helper->FormDefinition('edit-object');
 		$edit_form = new Zend_Form($form_definition);
-		
-		
+			
 		// There dont seem to be any contact types?
 		$types = DP_Config::getSysVal( 'ContactType' );
 		$contact_type_element = $edit_form->getElement('contact_type');

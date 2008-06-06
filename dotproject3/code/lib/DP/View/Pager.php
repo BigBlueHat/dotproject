@@ -159,7 +159,8 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 				
 				$output .= '<input type="button"
 								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->pager->page()-1).'\';this.form.submit();"	
-								   value="&lt;" />';	
+								   value="&lt;" 
+								   id="'.$this->id().'-prev" />';	
 			}
 			
 			$output .='<input type="text" id="'.$this->id().'-page" name="page" size="5" style="text-align: center" value="'.$this->pager->page().'" />';
@@ -168,7 +169,8 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 
 				$output .= '<input type="button"
 								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->pager->page()+1).'\';this.form.submit();" 
-								   value="&gt;" />';
+								   value="&gt;"
+								   id="'.$this->id().'-next" />';
 			}
 			
 			$output .= ' of '.$numpages.' &nbsp;';

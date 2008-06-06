@@ -4,7 +4,7 @@
 	border: 1px solid #A6BBCF;
 	margin-top: 2px;
 	margin-bottom: 2px;
-	height: 50px;
+	/*height: 60px;*/
 }
 
 
@@ -19,6 +19,11 @@
 	font-weight: bold;
 	list-style: none;
 
+}
+
+.Contacts_View_Card_Select {
+	list-style: none;
+	padding: 2px;
 }
 
 .Contacts_View_Card_Info {

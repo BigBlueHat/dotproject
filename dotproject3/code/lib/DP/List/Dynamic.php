@@ -181,7 +181,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	}	
 	
 	// From DP_View_DataSource Interface
-	
+	// TODO - consider merging View_DataSource and View_Notification_Interface for notification of client rendering
 	public function clientWillRender() {
 		
 		foreach($this->filters as $filter) {

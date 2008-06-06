@@ -3,7 +3,7 @@
  * Cell containing the name of an object which is also a link to that object.
  *
  */
-class DP_View_Cell_ObjectSelect extends DP_View_Cell {
+class DP_View_Cell_ObjectSelect extends DP_View_Cell implements DP_View_Notification_Interface {
 	private $hrefprefix;
 	private $id_key;
 	
@@ -26,7 +26,15 @@ class DP_View_Cell_ObjectSelect extends DP_View_Cell {
 	 * @return HTML output
 	 */
 	public function render($rowhash) {
-		$output = '<input type="checkbox" name="chk-'.$this->id_key.'[]" value="'.$rowhash[$this->id_key].'" onClick="toggleSelectListItem(this, this.parentNode.parentNode);" />';
+		//$output = '<input type="checkbox" name="chk-'.$this->id_key.'[]" value="'.$rowhash[$this->id_key].'" onChange="dpselection.toggle(this, this.parentNode.parentNode);" />';
+		$output = '<input 
+					type="checkbox"
+					id="chk-'.$this->id_key.'-'.$rowhash[$this->id_key].'"
+					name="chk-'.$this->id_key.'[]" 
+					value="'.$rowhash[$this->id_key].'" 
+					onClick="dpselection.toggle(this, this.parentNode.parentNode);"
+					/>';
+		
 		return $output;
 	}
 	
@@ -35,18 +43,11 @@ class DP_View_Cell_ObjectSelect extends DP_View_Cell {
 	 * 
 	 * @param Zend_View $view the view that is about to render this object.
 	 */
-	public function viewWillRender($view) {
+	public function viewWillRender(Zend_View $view) {
+		$view->HeadScript()->appendScript('dojo.require("dijit.form.CheckBox");');
+		$view->HeadScript()->appendFile('/js/DP/View/Cell-ObjectSelect.js');
+		
 		$this->notifyChildrenWillRender($view);
-	}
-	
-	/**
-	 * Get the relative URL of javascript file required to support this view.
-	 * 
-	 * @return string Relative url of .js file.
-	 * @todo Make return type array in order to supply multiple js files per view object.
-	 */
-	public function getRequiredJS() {
-		return '/js/DP/View/Cell-ObjectSelect.js';
 	}
 }
 ?>

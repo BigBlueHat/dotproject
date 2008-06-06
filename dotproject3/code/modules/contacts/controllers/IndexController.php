@@ -42,6 +42,10 @@ class Contacts_IndexController extends DP_Controller_Action {
 		$contact_col_view->add($contact_search_view, DP_View::PREPEND);
 		$contact_col_view->add($new_btn, DP_View::APPEND);
 		$contact_col_view->add($contact_list_pager, DP_View::APPEND);
+		
+		$select_tools = new DP_View_ObjectSelectTools('dp-companies-selection', $contact_col_view->id(), 'contact_id');
+		
+		$contact_col_view->add($select_tools, DP_View::APPEND);
 		// Set up data source
 		$contact_iterator = new DP_View_Iterator();
 		$contact_card_view = new Contacts_View_Card('dp-contacts-view-card');

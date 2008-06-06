@@ -9,7 +9,7 @@
  * @subpackge system
  * @version 3.0 alpha
  */
-class DP_View_Iterator_2D extends DP_View_Iterator {
+class DP_View_Iterator_2D extends DP_View_Iterator implements DP_View_Notification_Interface {
 	/**
 	 * @var string $grouping_element The element to group arrays of views with.
 	 */
@@ -27,36 +27,11 @@ class DP_View_Iterator_2D extends DP_View_Iterator {
 	}
 	
 	/**
-	 * Add a required javascript file.
-	 * 
-	 * @param DP_View_Cell $view Cell view that requested the javascript.
-	 * @param string $js Relative URL of the javascript to be included.
-	 */
-	private function addRequiredJS($view, $js) {
-		$this->required_js[] = Array('view'=>$view, 'js'=>$js);
-	}
-	
-	/**
-	 * Get an array of required javascript files.
-	 * 
-	 * @return Array indexed array of relative URLs to javascript files.
-	 */
-	private function getRequiredJSFiles() {
-		$required_files = Array();
-		foreach ($this->required_js as $req) {
-			$required_file = $req['js'];
-			$required_files[] = $required_file;
-		}
-		
-		return $required_files;
-	}
-	
-	/**
 	 * Add an array of views.
 	 * 
 	 * Views will be rendered inside a grouping element (such as <TR>) and each within their own container element (such as <TD>).
 	 * 
-	 * @param DP_Cell_View $views Array of views.
+	 * @param DP_Cell_View $views Array of views, indexed in the order of display
 	 */
 	public function addRow($views) {
 		$this->views[] = $views;
@@ -85,20 +60,13 @@ class DP_View_Iterator_2D extends DP_View_Iterator {
 	 * 
 	 * @param $view Zend_View
 	 */
-	public function viewWillRender($view) {
+	public function viewWillRender(Zend_View $view) {
 		// iterate through rows and cells, collecting required javascript.
-		Zend_Debug::dump("Iterator notified of view render.");
 		foreach($this->views as $viewrow) {
 			foreach ($viewrow as $v) {
-				$js = $v->getRequiredJS(); // Get the javascript required to support the cell.
-				
-				if ($js != null) {
-					Zend_Debug::dump("Javascript required: ".$js);
-					$view->headScript()->appendFile($js);
-				}
+				$v->viewWillRender($view); // Get the javascript required to support the cell.
 			}
 		}
-		// add javascript to Zend_View
 	}
 	
 	/**

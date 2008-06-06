@@ -4,6 +4,7 @@ class Contacts_ViewController extends DP_Controller_Action
 	public function objectAction()
 	{
 		Zend_Loader::registerAutoload();
+
 		
 		$contact_id = $this->getRequest()->id;
 		if ($contact_id) {
@@ -15,10 +16,16 @@ class Contacts_ViewController extends DP_Controller_Action
 		}
 		
 		if ($contact_id && (count($rows) != 0)) {
-
-			$obj = $rows->current();
+			$this->_helper->RequireModel('Db/Table/Companies', 'companies');
 			
+			$obj = $rows->current();
 			$this->view->obj = $obj;
+			
+			$companies = new Db_Table_Companies();
+			$rows = $companies->find($obj->contact_company);
+			$parent_obj = $rows->current();
+			
+			$this->view->parent_obj = $parent_obj;
 			
 			$title_block = $this->_helper->TitleBlock('');
 			$title_block->addCrumb('/contacts', 'contacts');

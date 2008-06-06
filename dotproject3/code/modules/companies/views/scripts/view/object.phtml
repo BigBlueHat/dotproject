@@ -1,6 +1,6 @@
 <?php
 $this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform-view.css');
-
+$this->related->viewWillRender($this);
 ?>
 <div id="companies-view-container" class="zend_form_container">
 <h1 class="headtest"><?=$this->obj->company_name?>

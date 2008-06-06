@@ -32,10 +32,13 @@ class Companies_ViewController extends DP_Controller_Action
 			$related_tab_view->setUrlPrefix($this_url);
 
 			$child_list = DP_Related::findChildren($obj);
+			
 			foreach ($child_list as $child) {
 				$child_view = DP_Related::factory($obj, $child);
 				$related_tab_view->add($child_view, $child->title);
 			}
+			
+			$related_tab_view->updateStateFromServer($this->getRequest());
 			
 			$this->view->obj = $obj;
 			$this->view->related = $related_tab_view;

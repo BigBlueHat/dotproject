@@ -31,7 +31,7 @@ $this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform-view.css');
 		<dt><?=$this->translate('Shown As:'); ?></dt>
 		<dd><?=$this->obj->contact_order_by?></dd>
 		<dt><?=$this->translate('Company:'); ?></dt>
-		<dd><?=$this->obj->contact_company?></dd>
+		<dd><?=$this->parent_obj->company_name?></dd>
 	</dl>
 	</fieldset>
 	</dd>

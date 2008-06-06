@@ -11,7 +11,7 @@
  * @version 3.0
  *
  */
-class DP_View_Columns extends DP_View_Stateful {
+class DP_View_Columns extends DP_View_Stateful implements DP_View_Notification_Interface {
 	/**
 	 * @var integer $num_columns The number of columns to display.
 	 */
@@ -177,5 +177,12 @@ class DP_View_Columns extends DP_View_Stateful {
 		}
 	}
 	
+	// From DP_View_Notification_Interface
+	
+	public function viewWillRender(Zend_View $view) {
+		if ($this->view_iterator instanceof DP_View_Notification_Interface) {
+			$this->view_iterator->viewWillRender($view);
+		}
+	}
 }
 ?>
