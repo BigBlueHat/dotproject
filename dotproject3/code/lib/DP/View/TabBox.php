@@ -161,7 +161,9 @@ class DP_View_TabBox extends DP_View_Stateful {
 	}
 	
 	protected function notifyChildrenWillRender($view) {
-		$this->tabs[$this->active_tab_index]['view']->viewWillRender($view);
+		if (array_key_exists($this->active_tab_index, $this->tabs)) {
+			$this->tabs[$this->active_tab_index]['view']->viewWillRender($view);
+		}
 	}
 	
 	/**

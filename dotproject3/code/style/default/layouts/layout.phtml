@@ -34,8 +34,8 @@
 	$this->headLink()->appendStylesheet('/js/dojo/dijit/themes/dijit/dijit.css');
 	$this->headLink()->appendStylesheet('/js/dojo/dijit/themes/tundra/tundra.css');
 		
-	$this->headScript()->prependFile('/js/dojo/dojo/dojo.js', 'text/javascript', Array('djConfig'=>'parseOnLoad: true'));
-	$this->headScript()->appendScript('dojo.require("dijit.form.CheckBox");');
+	$this->headScript()->prependFile('/js/dojo/dojo/dojo.js', 'text/javascript', Array('djConfig'=>'parseOnLoad: true, locale: \'en-au\''));
+	$this->headScript()->appendScript('dojo.require("dojo.parser");');
 		
 	
 	// @todo Fix favicon

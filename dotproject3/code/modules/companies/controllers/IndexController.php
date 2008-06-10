@@ -168,13 +168,21 @@ class Companies_IndexController extends DP_Controller_Action
 	 * @todo Implement this
 	 */
 	public function jsonAction() {
+		$this->_helper->RequireModel('Index');
 		
-		$data = Array(
-			"company1",
-			"company2"
-		);
+		$companies = new Companies_Index();
+		
+		// @todo 1000 item limit set temporarily - 5000 items exceeds memory usage limit
+		$pager = new DP_Pager();
+		$pager->setItemsPerPage(1000);
+		$pager->setPage(1);
+		
+		$companies->addModifier($pager);
+		$companies->clientWillRender();
+		
+		$this->_helper->json(Array('identifier'=>'company_id', 'value'=>'company_name', 'items'=>$companies->getArray()));
 
-		$this->_helper->autoCompleteDojo($data);
 	}
+	
 }
 ?>

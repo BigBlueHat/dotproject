@@ -28,12 +28,22 @@
 
 .zend_form fieldset.primary {
 	border: solid #96abbf 1px;
-	background: #b2c9db;
+	/* background: #b2c9db; */
+	background: #e2efff;
 	margin-bottom: 15px;
 }
 
 .zend_form fieldset.secondary {
 	background: #d6ebff;
+}
+
+.zend_form fieldset.fleft {
+	width: 0.5em;
+	float: left;
+}
+
+.zend_form fieldset.fright {
+	width: 0.5em;
 }
 
 .zend_form fieldset legend {
@@ -45,9 +55,9 @@
 
 }
 
-.zend_form fieldset dt { 	
+.zend_form fieldset dl dt { 	
 	float: left; 
-	width: 200px;
+	width: 130px;
 	text-align: right;
 	line-height: 100%;
 	margin-top: 3px;
@@ -55,9 +65,9 @@
 	padding-top: 2px;
 }
 
-.zend_form fieldset dd { 	
+.zend_form fieldset dd dl dd { 	
 	float: none; 
-	margin-left: 205px; 
+	margin-left: 135px; 
 	margin-top: 0px; 
 	margin-bottom: 0px; 
 	padding-top: 2px; 

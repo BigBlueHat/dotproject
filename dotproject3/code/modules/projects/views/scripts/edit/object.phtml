@@ -1,0 +1,35 @@
+<?php
+
+$this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform.css');
+$this->headScript()->appendScript('
+	dojo.require("dojo.data.ItemFileReadStore");
+	
+	dojo.require("dijit.form.DateTextBox");
+	dojo.require("dijit.form.CurrencyTextBox");
+	dojo.require("dijit.form.FilteringSelect");
+');
+
+?>
+<div dojoType="dojo.data.ItemFileReadStore" jsId="companyStore" url="/companies/index/json"></div>
+<div id="projects-edit-container" class="zend_form_container">
+	<h1 class="headtest"><?=$this->project_name?></h1>
+	<div style="position: relative">
+				<div id="projects-left" style="width: 40%; float: left" class="zend_form">
+			<fieldset class="primary">
+				<?=$this->form->main?>
+			</fieldset>
+			<fieldset>
+				<?=$this->form->timebudget?>
+			</fieldset>
+			<fieldset>
+				<?=$this->form->status?>
+			</fieldset>
+		</div>
+		<div id="projects-right" style="" class="zend_form">
+			<fieldset class="secondary">
+				<?=$this->form->details ?>
+			</fieldset>
+		</div>
+
+	</div>
+</div>

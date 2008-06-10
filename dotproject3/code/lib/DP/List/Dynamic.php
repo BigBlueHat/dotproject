@@ -7,7 +7,7 @@
  * @subpackage system
  * @version 3.0 alpha
  */
-class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_DataSource {
+class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, DP_View_List_DataSource {
 	/**
 	 * @var DP_Query $query Holds the query to execute
 	 * 
@@ -104,6 +104,14 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 		$subject->attach($this);
 	}
 	
+	public function getArray() {
+		if ($this->needs_refresh == false) {
+			return $this->object_list;
+		} else {
+			return false;
+		}
+	}
+	
 	// From Countable
 	
 	/**
@@ -179,6 +187,34 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 			}
 		}
 	}	
+	
+	// From ArrayAccess
+	
+	public function offsetExists($offset) {
+		if ($this->needs_refresh == false && array_key_exists($offset, $this->object_list)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function offsetGet($offset) {
+		if ($this->needs_refresh == false) {
+			return $this->object_list[$offset];
+		} else {
+			return false;
+		}
+	}
+	
+	public function offsetSet($offset, $value) {
+		// we dont implement setting, read only values.
+		return false;
+	}
+	
+	public function offsetUnset($offset) {
+		// we dont implement unset method either.
+		return false;
+	}
 	
 	// From DP_View_DataSource Interface
 	// TODO - consider merging View_DataSource and View_Notification_Interface for notification of client rendering

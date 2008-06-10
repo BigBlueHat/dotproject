@@ -14,7 +14,7 @@ class DP_View_Cell_ObjectSelect extends DP_View_Cell implements DP_View_Notifica
 
 		$this->setHTMLAttribs($attribs);
 		
-		$fc = Zend_Controller_Front::getInstance();
+		//$fc = Zend_Controller_Front::getInstance();
 		
 	}
 	
