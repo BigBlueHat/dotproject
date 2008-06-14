@@ -2,6 +2,8 @@
 /**
  * Extend the Zend_Controller_Action to provide entry point for all dP
  * pages.
+ * 
+ * @deprecated various Zend_Controller_Action helpers are used to achieve this functionality
  */
 class DP_Controller_Action extends Zend_Controller_Action
 {

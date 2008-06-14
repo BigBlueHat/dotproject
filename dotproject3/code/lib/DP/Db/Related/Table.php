@@ -4,7 +4,7 @@
  * 
  * The relationships table describes relationships between
  * objects in the system. The system uses this table to determine
- * relevant information to display.
+ * relevant information to display in the object view.
  * 
  * @package dotproject
  * @subpackage system

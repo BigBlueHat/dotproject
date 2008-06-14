@@ -3,6 +3,7 @@
 /** Tabbed interface base class
  *
  * Provides a programmatical interface to generate a tabbed style interface
+ * @deprecated for DP_View_TabBox
  */
 class DP_AppUI_TabBox_Abstract
 {

@@ -4,6 +4,7 @@
  *
  * The title block class generates the header which appears at the top of each module.
  * It includes the title of the module, the module icon, and links or buttons that can appear next to the module title
+ * @deprecated for DP_View_TitleBlock
  */
 class DP_AppUI_TitleBlock_Abstract {
 /** The main title of the page */

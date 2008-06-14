@@ -139,6 +139,7 @@ class IndexController extends DP_Controller_Action
 		
 		$layout->new_item = $newitem_form;
 		
+		$layout->messages = $this->getHelper('FlashMessenger')->getMessages();
 		
 	}
 

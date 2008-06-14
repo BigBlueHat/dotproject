@@ -12,11 +12,15 @@
  */
 class DP_Controller_Action_Helper_LoginRedirector extends Zend_Controller_Action_Helper_Abstract {
 
+	/**
+	 * Predispatch redirect if user is not logged in.
+	 * 
+	 * User is redirected to the login action of the default controller. The original requested URL is encoded in the
+	 * 'from' GET parameter.
+	 */
 	public function preDispatch() {
 		$fc = $this->getFrontController();
 		$ac = $this->getActionController();
-		
-		//Zend_Debug::dump('DP_Controller_Action_Helper_LoginRedirector');		
 		
 		$controller = $fc->getRequest()->getControllerName();
 		if ($controller != 'login' && $controller != 'error' && DP_AppUI::getInstance()->doLogin()) {

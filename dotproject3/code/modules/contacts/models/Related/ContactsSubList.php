@@ -12,8 +12,8 @@ class ContactsSubList implements DP_Related_Handler {
 	public function __construct($relrow) {
 		$fc = Zend_Controller_Front::getInstance();
 		$cdir = $fc->getControllerDirectory($relrow->child_module);
-		$model_dir = dirname($cdir).'/models';
-		Zend_Loader::loadFile($model_dir.'/Index.php');
+		$model_dir = dirname($cdir).'/models/';
+		Zend_Loader::loadFile($model_dir.'Contacts/Index.php');
 	}
 	
 	public function makeRelatedView($parent, $relationship) {
@@ -33,7 +33,7 @@ class ContactsSubList implements DP_Related_Handler {
 	 * @return DP_View Instance of DP_View.
 	 */
 	protected function companyContactsList($parent) {
-		Zend_Loader::loadFile('Index.php');
+		//Zend_Loader::loadFile('Contacts/Index.php');
 		$contacts_index = new Contacts_Index();
 
 		$parent_table = $parent->getTable();
@@ -63,12 +63,10 @@ class ContactsSubList implements DP_Related_Handler {
 		
 		$contacts_sublist->setDataSource($contacts_index);
 		$contacts_sublist->setColumnHeaders(Array('contact_id'=>'X', 
-																			'contact_order_by'=>'Contact Name'));
+												  'contact_order_by'=>'Contact Name'));
 		$contacts_sublist->width = '100%';
 		
 		return $contacts_sublist;
-		// Return list view
-		
 	}
 }
 ?>

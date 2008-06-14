@@ -5,7 +5,7 @@
  * @package dotproject
  * @subpackage system
  * @version 3.0 alpha
- *
+ * @deprecated Use helper ModelIncluder instead
  */
 class DP_Controller_Action_Helper_RequireModel extends Zend_Controller_Action_Helper_Abstract {
 	

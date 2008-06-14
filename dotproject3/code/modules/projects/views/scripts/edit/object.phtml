@@ -2,34 +2,86 @@
 
 $this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform.css');
 $this->headScript()->appendScript('
+	function setShort() {
+		var project_name = dojo.byId("project_name");
+		var project_short_name = dojo.byId("project_short_name");
+		var x = 10;
+		
+		if (project_name.value.length < 11) {
+			x = project_name.value.length;
+		}
+		
+		if (project_short_name.value.length == 0) {
+			project_short_name.value = project_name.value.substr(0,x);
+		}
+	}
+');
+
+/*
+$this->headScript()->appendScript('
+	
 	dojo.require("dojo.data.ItemFileReadStore");
 	
 	dojo.require("dijit.form.DateTextBox");
 	dojo.require("dijit.form.CurrencyTextBox");
 	dojo.require("dijit.form.FilteringSelect");
-');
+	dojo.require("dijit.ColorPalette");
+	dojo.require("dijit.Editor");
+	
+	// Company selector.
+	
+	dojo.addOnLoad(function() {
+		window.companyStore = new dojo.data.ItemFileReadStore({ url:"/companies/index/json"});
+		var project_company = new dijit.form.FilteringSelect( { 
+															name: "project_company", 
+															searchAttr: "company_name", 
+															value: "company_id", 
+															store: window.companyStore }, 
+																dojo.byId("project_company") );
+		
+		var project_start_date = new dijit.form.DateTextBox(null, dojo.byId("project_start_date"));
+		var project_end_date = new dijit.form.DateTextBox(null, dojo.byId("project_end_date"));
+		// TODO - not localised
+		var project_target_budget = new dijit.form.CurrencyTextBox({ currency: "AUD" }, dojo.byId("project_target_budget"));
+		
+		var project_description = new dijit.Editor({ inheritWidth: true }, dojo.byId("project_description"));
+		
+		dojo.connect(dojo.byId("project_color_identifier"), "onclick", "toggleColorPicker");
+		dojo.connect(dojo.byId("project_name"), "onblur", "setShort");
+	});
+'); */
 
 ?>
-<div dojoType="dojo.data.ItemFileReadStore" jsId="companyStore" url="/companies/index/json"></div>
+
 <div id="projects-edit-container" class="zend_form_container">
-	<h1 class="headtest"><?=$this->project_name?></h1>
-	<div style="position: relative">
-				<div id="projects-left" style="width: 40%; float: left" class="zend_form">
+	<h1 class="headtest"><?=$this->heading?></h1>
+	<?=$this->form ?>
+</div>
+<? /*	
+	<div id="wrap">
+		<div id="projects-left" style="width: 49%; float: left" class="zend_form">
 			<fieldset class="primary">
-				<?=$this->form->main?>
+			<legend>Main</legend>
+				<?=$this->form->main?>				
+				<div id="pcontainer" style="position: absolute; float: left">
+					<div id="ptest"></div>
+				</div>
 			</fieldset>
 			<fieldset>
+				<legend>Timing and budget</legend>
 				<?=$this->form->timebudget?>
 			</fieldset>
 			<fieldset>
+				<legend>Project status</legend>
 				<?=$this->form->status?>
 			</fieldset>
 		</div>
-		<div id="projects-right" style="" class="zend_form">
+		<div id="projects-right" style="width: 50%; float: right" class="zend_form">
 			<fieldset class="secondary">
+				<legend>Details</legend>
 				<?=$this->form->details ?>
 			</fieldset>
 		</div>
-
+		<div id="foot" style="clear: both; width: 100%"><?=$this->form->buttons ?></div>
 	</div>
-</div>
+</div> */ ?>

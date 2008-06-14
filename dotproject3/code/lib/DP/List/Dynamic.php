@@ -104,6 +104,11 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 		$subject->attach($this);
 	}
 	
+	/**
+	 * Get the object list as an array.
+	 * 
+	 * @return array of rows, indexed.
+	 */
 	public function getArray() {
 		if ($this->needs_refresh == false) {
 			return $this->object_list;
@@ -112,6 +117,14 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 		}
 	}
 	
+	/**
+	 * Get the current query
+	 * 
+	 * @return DP_Query query
+	 */
+	public function getQuery() {
+		return $this->query;
+	}
 	// From Countable
 	
 	/**

@@ -10,9 +10,6 @@
 class Contacts_IndexController extends DP_Controller_Action {
 	
 	public function indexAction() {
-		$this->_helper->RequireModel('Index');
-		$this->_helper->RequireModel('View/Card');
-		
 		$AppUI = DP_AppUI::getInstance();
 		$AppUI->savePlace();
 		$perms =& $AppUI->acl();

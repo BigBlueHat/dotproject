@@ -38,9 +38,6 @@ class Companies_IndexController extends DP_Controller_Action
 	 */
 	public function indexAction()
 	{
-		// @todo - find a way to autoload index.
-		$this->_helper->RequireModel('Index');
-
 		// TODO - temporary workaround for bypassing DP_Query
 		$db = DP_Config::getDB();
 		Zend_Db_Table_Abstract::setDefaultAdapter($db);
@@ -167,21 +164,20 @@ class Companies_IndexController extends DP_Controller_Action
 	 * 
 	 * @todo Implement this
 	 */
-	public function jsonAction() {
-		$this->_helper->RequireModel('Index');
-		
+	public function jsonAction() {	
 		$companies = new Companies_Index();
 		
-		// @todo 1000 item limit set temporarily - 5000 items exceeds memory usage limit
+		// @todo item limit set temporarily - 5000 items exceeds memory usage limit
 		$pager = new DP_Pager();
-		$pager->setItemsPerPage(1000);
+		$pager->setItemsPerPage(100);
 		$pager->setPage(1);
 		
 		$companies->addModifier($pager);
 		$companies->clientWillRender();
 		
-		$this->_helper->json(Array('identifier'=>'company_id', 'value'=>'company_name', 'items'=>$companies->getArray()));
-
+		$this->_helper->json(
+			Array( 'identifier'=>'company_id', 'items'=>$companies->getArray() )
+		);
 	}
 	
 }

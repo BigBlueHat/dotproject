@@ -210,8 +210,8 @@ class DP_View_TitleBlock extends DP_View {
 						<tr>
 						<td nowrap="nowrap">';
 			
-			if (count($this->crumbs) > 0) {
-				$output .= '>&nbsp;';
+			if (count($this->crumbs) > 0) {	
+				$output .= '&bull;&nbsp;';
 				for ($i = 0; $i < count($this->crumbs); $i++) {
 					$crumb = $this->crumbs[$i];
 					
