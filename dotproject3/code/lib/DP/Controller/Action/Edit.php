@@ -40,7 +40,7 @@ abstract class DP_Controller_Action_Edit extends Zend_Controller_Action
 			$rows = $tbl->find($this->getRequest()->id);
 				
 			if ($rows->count() != 1) {
-				throw new Exception("Invalid ID: ID Not found");
+				throw new Exception("Invalid ID: Object Not found");
 			}
 				
 			$obj = $rows->current();			

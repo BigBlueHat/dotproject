@@ -13,7 +13,7 @@ require_once 'DP/Controller/Action.php';
  * @package dotproject
  * @subpackage default
  */
-class LoginController extends DP_Controller_Action
+class LoginController extends Zend_Controller_Action
 {
 	/**
 	 * Displays the login page.
@@ -39,6 +39,7 @@ class LoginController extends DP_Controller_Action
 	
 	/**
 	 * Construct and return the login form
+	 * @return Zend_Form login form
 	 */
 	public function getLoginForm()
 	{
@@ -101,20 +102,33 @@ class LoginController extends DP_Controller_Action
 	 */
 	public function saveAction()
 	{
-		$req = $this->getRequest();
+		$request = $this->getRequest();
 		$form = $this->getLoginForm();
-		if ($form->isValid($_POST) && DP_AppUI::getInstance()->login($this->getRequest()->getParam('username'), $this->getRequest()->getParam('password'))) { 
-		//if (DP_AppUI::getInstance()->login($this->getRequest()->getParam('username'), $this->getRequest()->getParam('password'))) {
-			$redirect = urldecode($this->getRequest()->getParam('redirect'));
-			$this->getResponse()->setRedirect($redirect);
-			$this->getResponse()->sendHeaders();
-			error_log('Redirecting to '.$redirect);
-			exit;
-		} else {
-			DP_AppUI::getInstance()->setMsg('Login Failed');
-			// Display the login page again.
-			$this->_forward('index');
-		}
+		
+		if($form->isValid($_POST)) {
+			$db = DP_Config::getDB();
+			
+			$credentials = $form->getValues();
+			
+			$authAdapter = DP_Auth::factory();
+			$authAdapter->setIdentity($credentials['username']);
+			$authAdapter->setCredential($credentials['password']);
+	
+			$auth = Zend_Auth::getInstance();
+			$result = $auth->authenticate($authAdapter);
+			
+			if ($result->isValid()) {
+				$redirect = urldecode($this->getRequest()->getParam('redirect'));
+				$this->getResponse()->setRedirect($redirect);
+				$this->getResponse()->sendHeaders();
+				error_log('Redirecting to '.$redirect);
+				exit;
+			} else {
+				$msg = $result->getMessages();
+				DP_AppUI::getInstance()->setMsg($msg[0]);
+				$this->_forward('index');
+			}
+		}		
 	}
 }
 ?>

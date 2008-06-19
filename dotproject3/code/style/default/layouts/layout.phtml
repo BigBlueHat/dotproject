@@ -20,43 +20,22 @@
 	
 	$this->headTitle($layout->page_title);
 	
-
-	
 	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/print.css', 'print');
 	$this->headLink()->appendStylesheet($layout->baseUrl.'/calendar.css');
 	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/'.$layout->uistyle.'/main.css');
 	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/calendar/calendar-dp.css');
 	$this->headLink()->appendStylesheet('./style/'.$layout->uistyle.'/main.css');	
 	
-	// dojo toolkit
-	
-	//$this->headLink()->appendStylesheet('/js/dojo/dojo/resources/dojo.css');
-	$this->headLink()->appendStylesheet('/js/dojo/dijit/themes/dijit/dijit.css');
-	$this->headLink()->appendStylesheet('/js/dojo/dijit/themes/tundra/tundra.css');
-		
-	$this->headScript()->prependFile('/js/dojo/dojo/dojo.js', 'text/javascript', Array('djConfig'=>'parseOnLoad: true, locale: \'en-au\''));
-	$this->headScript()->appendScript('dojo.require("dojo.parser");');
-		
-	
 	// @todo Fix favicon
 	$this->headLink()->appendAlternate($layout->baseUrl.'/img/'.$layout->uistyle.'/favicon.ico', 'image/ico', 'shortcut icon');
 	
 	$this->headLink()->appendStylesheet('./style/'.$layout->uistyle.'/main.css');
 	
-
-	/*
-	$this->headStyle()->appendStyle('
-        @import "/js/dojo/dijit/themes/tundra/tundra.css";
-        @import "/js/dojo/dojo/resources/dojo.css"
-    ');*/
-	
 	$this->headScript()->setAllowArbitraryAttributes(true);
 	
 	$this->headScript()->appendFile('/lib/overlib/overlib.js');
 	$this->headScript()->appendFile('/js/dPcommon.js');
-
 	
-	//$this->headScript()->appendScript('dojo.require("dijit.form.Button");');	
 	// Print out HEAD sections
 	?>
 	<?=$this->headMeta(); ?>

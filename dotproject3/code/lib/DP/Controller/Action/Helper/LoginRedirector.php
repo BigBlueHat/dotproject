@@ -23,7 +23,11 @@ class DP_Controller_Action_Helper_LoginRedirector extends Zend_Controller_Action
 		$ac = $this->getActionController();
 		
 		$controller = $fc->getRequest()->getControllerName();
-		if ($controller != 'login' && $controller != 'error' && DP_AppUI::getInstance()->doLogin()) {
+		
+		$auth = Zend_Auth::getInstance();
+		$identity = $auth->getIdentity();
+		
+		if ($controller != 'login' && $controller != 'error' && $auth->hasIdentity() == false) {
 			$redir_login = $fc->getRequest()->getBaseUrl() . '/login/?from=' . urlencode($this->getRequest()->getRequestUri());
 			$this->getResponse()->setRedirect($redir_login);
 			$this->getResponse()->sendHeaders();

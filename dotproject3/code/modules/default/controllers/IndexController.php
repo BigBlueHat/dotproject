@@ -22,15 +22,17 @@ class IndexController extends DP_Controller_Action
 	}
 	
 	public function usernavAction() {
-		$AppUI = DP_AppUI::getInstance();
-		$this->view->user_name = $AppUI->user_first_name.' '.$AppUI->user_last_name;
+		$this->view->user_name = Zend_Auth::getInstance()->getIdentity();
 	}
 	
 	public function modulenavigationAction()
 	{
 		$AppUI = DP_AppUI::getInstance();
 		// top navigation menu
-		if ($AppUI->user_id > 0) {
+		$auth = Zend_Auth::getInstance();
+		
+		if ($auth->hasIdentity()) {
+		//if ($AppUI->user_id > 0) {
 			$nav = $AppUI->getMenuModules();
 			$perms =& $AppUI->acl();
 			
