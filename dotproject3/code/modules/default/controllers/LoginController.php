@@ -1,6 +1,4 @@
 <?php
-require_once 'DP/Controller/Action.php';
-
 /**
  * This is the file containing the definition of the login controller
  * @author ajdonnison
@@ -22,19 +20,18 @@ class LoginController extends Zend_Controller_Action
 	 * redirected to their originally requested location after they log in.
 	 */
 	public function indexAction()
-	{
-		$view = $this->_helper->viewRenderer->view;
-		
+	{		
 		$layout = $this->_helper->layout();
 		$layout->dialog = 1;
 		
 		$AppUI = DP_AppUI::getInstance();
-		$view->assign('version', $AppUI->getVersion());
+		$this->view->version = $AppUI->getVersion();
 
-		$view->assign('config',DP_Config::getConfig());
+		$this->view->config = DP_Config::getConfig();
+		$this->view->message = implode('<br />',$this->getHelper('FlashMessenger')->getMessages());
 		
 		$frm = $this->getLoginForm();
-		$view->assign('form', $frm);
+		$this->view->form = $frm;
 	}
 	
 	/**
@@ -59,8 +56,8 @@ class LoginController extends Zend_Controller_Action
 		$redirect = ($this->getRequest()->getParam('from')) ? $this->getRequest()->getParam('from') : $this->getRequest()->getParam('redirect');
 		$frm_redir = new Zend_Form_Element_Hidden(Array('name'=>'redirect', 'value'=>$redirect));
 		
-		$frm_username = new Zend_Form_Element_Text(Array('name'=>'username', 'label'=>'Username :' ));
-		$frm_password = new Zend_Form_Element_Password(Array('name'=>'password', 'label'=>'Password :' ));
+		$frm_username = new Zend_Form_Element_Text(Array('name'=>'username', 'label'=>'Username' ));
+		$frm_password = new Zend_Form_Element_Password(Array('name'=>'password', 'label'=>'Password' ));
 		$frm_submit = new Zend_Form_Element_Submit(Array('name'=>'login', 'value'=>'login'));
 		$frm_img = new Zend_Form_Element_Image(Array('name'=>'dotproject', 
 													'src'=>$baseurl.'/img/default/dp_icon.gif',
@@ -118,14 +115,20 @@ class LoginController extends Zend_Controller_Action
 			$result = $auth->authenticate($authAdapter);
 			
 			if ($result->isValid()) {
+				// write user table data into session
+				$user_session = new DP_User_Session($auth->getIdentity());
+				$user_session->load();
+				$auth->getStorage()->write($user_session);
+				
 				$redirect = urldecode($this->getRequest()->getParam('redirect'));
 				$this->getResponse()->setRedirect($redirect);
 				$this->getResponse()->sendHeaders();
 				error_log('Redirecting to '.$redirect);
 				exit;
 			} else {
-				$msg = $result->getMessages();
-				DP_AppUI::getInstance()->setMsg($msg[0]);
+				//$msg = $result->getMessages();
+				$this->_helper->FlashMessenger('Login Failed.');
+
 				$this->_forward('index');
 			}
 		}		
