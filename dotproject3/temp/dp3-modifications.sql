@@ -9,3 +9,4 @@ CREATE TABLE  `dotproject`.`relationships` (
   `title` varchar(45) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Map of parent to child objects';
+INSERT INTO `relationships` VALUES (null, 'companies', 'company_id', 'contacts', 'ContactsSubList', 1, 'Contacts');
