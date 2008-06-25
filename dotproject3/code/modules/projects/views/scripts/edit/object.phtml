@@ -3,8 +3,8 @@
 $this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform.css');
 $this->headScript()->appendScript('
 	function setShort() {
-		var project_name = dojo.byId("project_name");
-		var project_short_name = dojo.byId("project_short_name");
+		var project_name = document.getElementById("project_name");
+		var project_short_name = document.getElementById("project_short_name");
 		var x = 10;
 		
 		if (project_name.value.length < 11) {

@@ -100,7 +100,8 @@ class DP_View_List extends DP_View_Stateful {
 	 * @param array $colhdrs array of strings to use as column headers
 	 */
 	public function setColumnHeaders($colhdrs) {
-		$this->column_headers = $colhdrs;
+		//$this->column_headers = $colhdrs;
+		echo "Deprecated setColumnHeaders()";
 	}
 	
 	/**
@@ -109,7 +110,7 @@ class DP_View_List extends DP_View_Stateful {
 	 * @return integer Number of columns.
 	 */
 	public function columnCount() {
-		return count($this->column_headers);
+		return count($this->row_iterator->getColumns());
 	}
 	
 	/**
@@ -120,6 +121,32 @@ class DP_View_List extends DP_View_Stateful {
 	public function viewWillRender($view) {
 		$this->row_iterator->viewWillRender($view); // Allows row iterator to add javascript for cells.
 		$this->notifyChildrenWillRender($view);
+	}
+	
+	public function renderColumnHeaders(DP_View_Iterator_2D $vi) {
+		$columns = $vi->getColumns();
+		$sort = $this->sort_object;
+		$output = '';
+		
+		foreach ($columns as $col) {
+			$output .= '<th><a href="?view_id='.$this->id().'&sort='.$col['name'].'" class="hdr">'.$col['title'];
+			
+			$sort_direction = $sort->getSort($col['name']);
+			switch($sort_direction) {
+				case DP_Query_Sort::SORT_ASCENDING:
+					$output .= '&nbsp;(ASC)';
+					break;
+				case DP_Query_Sort::SORT_DESCENDING:
+					$output .= '&nbsp;(DESC)';
+					break;
+				default:
+					// no sort.
+			}
+
+			$output .= '</a></th>';
+		}
+		
+		return $output;
 	}
 	
 	/**
@@ -138,9 +165,11 @@ class DP_View_List extends DP_View_Stateful {
 		// TODO - transfer element attributes to style sheet
 		$output .= "<table class=\"dp-view-list\" id=\"".$this->id()."\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
 		
+		/*
 		foreach ($this->column_headers as $fname => $hdr) {
 			$output .= '<th><a href="?view_id='.$this->id().'&sort='.$fname.'" class="hdr">'.$hdr.'</a></th>';
-		}
+		}*/
+		$output .= $this->renderColumnHeaders($this->row_iterator);
 
 		$this->row_iterator->setDataSource($this->src);
 		

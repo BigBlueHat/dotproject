@@ -69,6 +69,19 @@ class DP_View_Iterator_2D extends DP_View_Iterator implements DP_View_Notificati
 		}
 	}
 	
+	public function getColumns() {
+		$cells = $this->views[0]; // TODO - not hardcoded row index
+		$columns = Array();
+		foreach ($cells as $cell) {
+			$column_name = $cell->getColumnName();
+			$column_title = $cell->getColumnTitle();
+			
+			$columns[] = Array('name'=>$column_name, 'title'=>$column_title);
+		}
+
+		return $columns;
+	}
+	
 	/**
 	 * Render the current item.
 	 * 
@@ -82,12 +95,20 @@ class DP_View_Iterator_2D extends DP_View_Iterator implements DP_View_Notificati
 		$output = '<'.$this->groupingElement().'>';
 		
 		foreach ($cells as $cell) {
+			$cell_markup = $cell->render($this->src->current());
 			
 			$output .= '<'.$this->containerElement();
+			/*
 			$output .= ($cell->align()) ? ' align="'.$cell->align().'"' : '';
 			$output .= ($cell->width()) ? ' width="'.$cell->width().'"' : '';
+			*/
+			$attr = $cell->getHTMLAttribs();
+
+			foreach($attr as $name => $value) {
+				$output .= ' '.$name.'="'.$value.'"';
+			}
 			$output .= '>';
-			$output .= $cell->render($this->src->current());
+			$output .= $cell_markup;
 			$output .= '</'.$this->containerElement().'>';
 		}
 		

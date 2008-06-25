@@ -69,8 +69,8 @@ ListSelection.prototype.delete = function(el_table_id)
 	} else {
 		if (confirm('^Are you sure you want to delete the selected items?'))
 		{
-			dojo.byId('select-delete').value = 1;
-			dojo.byId(el_table_id).parentNode.submit();
+			document.getElementById('select-delete').value = 1;
+			document.getElementById(el_table_id).parentNode.submit();
 			// submit form
 		}
 	}

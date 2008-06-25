@@ -93,7 +93,7 @@ class DP_View_ObjectSelectTools extends DP_View_Stateful {
 		$this->checkbox_id = $this->obj_key;
 		$this->checkbox_name = 'chk-'.$this->obj_key;
 		
-		return new DP_View_Cell_ObjectSelect($this->checkbox_id, Array('width'=>'20px', 'align'=>'center'));
+		return new DP_View_Cell_ObjectSelect($this->checkbox_id, 'ID', Array('width'=>'20px', 'align'=>'center'));
 	}
 	
 	/**

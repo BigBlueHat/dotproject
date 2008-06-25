@@ -4,13 +4,13 @@
  *
  */
 class DP_View_Cell_ObjectLink extends DP_View_Cell {
-	private $hrefprefix;
-	private $id_key;
-	private $name_key;
+	protected $hrefprefix;
+	protected $id_key;
+	protected $name_key;
 	
-	public function __construct($id_key, $name_key, $hrefprefix) {
+	public function __construct($id_key, $name_key, $hrefprefix, $column_title = '(Untitled)') {
 		// TODO - proper generation of parent id
-		parent::__construct('Cell');
+		parent::__construct($name_key, $column_title);
 		$this->id_key = $id_key;
 		$this->name_key = $name_key;
 		$this->hrefprefix = $hrefprefix;

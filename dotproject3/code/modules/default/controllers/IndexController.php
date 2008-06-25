@@ -18,8 +18,10 @@ class IndexController extends DP_Controller_Action
 {
 	public function indexAction()
 	{
-		
+
 	}
+	
+
 	
 	public function usernavAction() {
 		$this->view->user_name = Zend_Auth::getInstance()->getIdentity();

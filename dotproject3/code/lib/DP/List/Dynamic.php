@@ -9,15 +9,19 @@
  */
 class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, DP_View_List_DataSource {
 	/**
-	 * @var DP_Query $query Holds the query to execute
+	 * @var Zend_Db_Select $query Holds the query to execute
 	 * 
 	 * May be replaced in future with table gateway object (Zend_Db_Table)
 	 */
 	protected $query;
 	/**
-	 * @var DP_Query $cq Query to find the full non limited count of rows.
+	 * @var Zend_Db_Select $cq Query to find the full non limited count of rows.
 	 */
 	protected $cq;
+	/**
+	 * @var Array $columns Associative array column_name=>column_title (descriptive)
+	 */
+	protected $columns;
 	
 	/**
 	 * @var Array $filters Array of DP_Filter objects.
@@ -48,6 +52,7 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	public function __construct() {
 		$this->object_list = Array();
 		$this->needs_refresh = true;
+		$this->columns = Array();
 		
 		$this->object_iter_idx = 0;
 		
@@ -62,7 +67,11 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	 * also takes care of any observed pager views.
 	 */
 	public function refresh() {
-		$this->object_list = $this->query->loadList();
+		$db = DP_Config::getDB();
+		$stmt = $db->query($this->query);
+		Zend_Debug::dump((string)$this->query);
+		$result = $stmt->fetchAll();
+		$this->object_list = $result;
 		$this->needs_refresh = false;
 		
 		if ($this->pager instanceof DP_Pager) {
@@ -125,6 +134,34 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	public function getQuery() {
 		return $this->query;
 	}
+	
+	/**
+	 * Add a column to show.
+	 * 
+	 * @param string $col_name Database name of the column
+	 * @param string $col_title Descriptive name of the column
+	 */
+	public function addColumn($col_name, $col_title) {
+		$this->columns[$col_name] = $col_title;
+	}
+	
+	/**
+	 * Set column names and descriptions.
+	 * 
+	 * @param $columns array Associative array of column_name=>column_title
+	 */
+	public function setColumns($columns) {
+		$this->columns = $columns;
+	}
+	
+	/**
+	 * Get column names and descriptions.
+	 * 
+	 * @return array Associative array of column_name=>column_title
+	 */
+	public function getColumns() {
+		return $this->columns;
+	}
 	// From Countable
 	
 	/**
@@ -134,10 +171,12 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	 */
 	public function count() {
 		if ($this->cq != null) {
-			$count_row = $this->cq->loadList();
-			$record_total = array_values($count_row[0]);
-			//Zend_Debug::dump($record_total);
-			return $record_total[0];
+
+			$db = DP_Config::getDB();
+			$stmt = $db->query($this->cq);
+			$record_count = $stmt->fetchColumn(0);
+
+			return $record_count;
 		} else {
 			return 0;
 		}
@@ -230,6 +269,8 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	}
 	
 	// From DP_View_DataSource Interface
+	
+	
 	// TODO - consider merging View_DataSource and View_Notification_Interface for notification of client rendering
 	public function clientWillRender() {
 		
@@ -238,12 +279,14 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 				foreach($filter->filters as $rule) {
 					switch($rule['filter_type']) {
 						case DP_Filter::VALUE_EQUAL:
-							$this->query->addWhere($rule['filter_field']." = ".$rule['field_value']);
-							$this->cq->addWhere($rule['filter_field']." = ".$rule['field_value']);
+							
+							$this->query->where($rule['filter_field']." = ".$rule['field_value']);
+							$this->cq->where($rule['filter_field']." = ".$rule['field_value']);
+
 							break;
 						case DP_Filter::VALUE_SUBSTR:
-							$this->query->addWhere($rule['filter_field']." LIKE '%".$rule['field_value']."%'");
-							$this->cq->addWhere($rule['filter_field']." LIKE '%".$rule['field_value']."%'");
+							$this->query->where($rule['filter_field']." LIKE '%".$rule['field_value']."%'");
+							$this->cq->where($rule['filter_field']." LIKE '%".$rule['field_value']."%'");
 							break;
 					}
 				}
@@ -254,20 +297,29 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 			foreach ($this->sorter as $field => $sort_rule) {
 				switch($sort_rule) {
 					case DP_Query_Sort::SORT_DESCENDING:
-						$this->query->addOrder($field.' DESC');
+						$this->query->order($field.' DESC');
 						break;
 					case DP_Query_Sort::SORT_ASCENDING:
-						$this->query->addOrder($field.' ASC');
+						$this->query->order($field.' ASC');
 						break;
 				}
 			}
 		}
-		
+
 		if ($this->pager instanceof DP_Pager) {
-			$this->query->setPageLimit($this->pager->page(), $this->pager->itemsPerPage());
+			$items_page = $this->pager->itemsPerPage();
+			$page_num = $this->pager->page();
+			$item_start = ($page_num - 1) * $items_page;
+			
+			$this->query->limit($items_page, $item_start);
 		}
 
-		$this->refresh();
+		try {
+			$this->refresh();
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			die();
+		}
 	}
 	
 	// From SplObserver
@@ -280,7 +332,7 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	public function update(SplSubject $subject) {
 		
 		// If the list filters have changed, reset page to 1.
-		if ($subject instanceof DP_Filter) {
+		if ($subject instanceof DP_Filter && $this->pager instanceof DP_Pager) {
 			$this->pager->setPage(1);
 		}
 	}

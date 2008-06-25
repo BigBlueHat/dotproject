@@ -9,13 +9,18 @@
  *
  */
 class DP_View_Cell extends DP_View {
-	private $value_key;
+	protected $value_key;
+	protected $column_title;
+	protected $column_name;
 	
-	public function __construct($value_key, $attribs = array()) {
+	public function __construct($value_key, $column_title = '(Untitled)', $attribs = Array()) {
 		// TODO - proper generation of parent id
 		parent::__construct('dp-cell-'.$value_key);
 		$this->value_key = $value_key;
 		$this->setHTMLAttribs($attribs);
+		
+		$this->column_title = $column_title;
+		$this->column_name = $value_key;
 	}
 	
 	/**
@@ -29,13 +34,16 @@ class DP_View_Cell extends DP_View {
 		return $output;
 	}
 	
-	/**
-	 * Get the javascript required to support this cell.
-	 * 
-	 * @return relative URL of javascript file or null if no javascript required.
-	 */
-	public function getRequiredJS() {
-		return null;
+	public function getColumnTitle() {
+		return $this->column_title;
+	}
+	
+	public function setColumnTitle($title) {
+		$this->column_title = $title;
+	}
+	
+	public function getColumnName() {
+		return $this->column_name;
 	}
 }
 ?>

@@ -41,10 +41,7 @@ class Companies_IndexController extends DP_Controller_Action
 		// TODO - temporary workaround for bypassing DP_Query
 		$db = DP_Config::getDB();
 		Zend_Db_Table_Abstract::setDefaultAdapter($db);
-			
-		$AppUI = DP_AppUI::getInstance();
-		$AppUI->savePlace();
-		//$perms =& $AppUI->acl();
+
 		
 		// load the company types
 		$types = DP_Config::getSysVal( 'CompanyType' );
@@ -66,7 +63,6 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		$company_list_pager = DP_View_Factory::getPagerView('dp-companies-list-pager');
 		$company_list_pager->setItemsPerPage(30);
-		$company_list_pager->setUrlPrefix($this_url);
 		$company_list_pager->setPersistent(false);
 		$company_list_pager->align = 'center';
 
@@ -97,10 +93,10 @@ class Companies_IndexController extends DP_Controller_Action
 		// Access the default row iterator, you can set your own if preferred
 		$companies_list_view->row_iterator->addRow(
 								Array($select_tools->makeSelectCellView(),
-									  new DP_View_Cell_ObjectLink('company_id','company_name', '/companies/view/object/id/'),
-									  new DP_View_Cell('company_projects_active', Array('width'=>'120px', 'align'=>'center')),
-								      new DP_View_Cell('company_projects_inactive', Array('width'=>'120px', 'align'=>'center')),
-								      new DP_View_Cell_ArrayItem($types, 'company_type', Array('align'=>'center','width'=>'120px')))
+									  new DP_View_Cell_ObjectLink('company_id','company_name', '/companies/view/object/id/','Company Name'),
+									  new DP_View_Cell('company_projects_active', 'Projects Active', Array('width'=>'120px', 'align'=>'center')),
+								      new DP_View_Cell('company_projects_inactive', 'Projects Archived', Array('width'=>'120px', 'align'=>'center')),
+								      new DP_View_Cell_ArrayItem($types, 'company_type', 'Type', Array('align'=>'center','width'=>'120px')))
 											);
 											
 		$companies_list_view->width = '100%';
@@ -143,13 +139,7 @@ class Companies_IndexController extends DP_Controller_Action
 		$companies_index->addModifier($companies_tab_filter);	
 		
 		$companies_list_view->setDataSource($companies_index);
-		// @todo create better definition of headers to combine sortable and non sortable headers
-		$companies_list_view->setColumnHeaders(Array('company_id'=>'X',
-													 'c.company_name'=>'Company Name', 
-													 'company_projects_active'=>'Active Projects', 
-													 'company_projects_inactive'=>'Inactive Projects',
-													 'company_type'=>'Company Type'));
-		
+
         // Show status message
 		// TODO - flashmessenger expects Zend_Session as session handler
         //$this->view->messages = $this->_flashMessenger->getMessages();

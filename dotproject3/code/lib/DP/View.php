@@ -61,7 +61,7 @@ class DP_View {
 		$this->parent_view_id = -1;
 		$this->html_attribs = Array();
 		$this->child_views = Array();
-		$this->html_attribs_allowed = Array('width','align','height');
+		$this->html_attribs_allowed = Array('width','align','height','style');
 	}
 
 	/**
@@ -181,6 +181,15 @@ class DP_View {
 	 */
 	public function setHTMLAttribs($attribs) {
 		$this->html_attribs = $attribs;
+	}
+	
+	/**
+	 * Get html attributes
+	 * 
+	 * @return array Associative array of attributes.
+	 */
+	public function getHTMLAttribs() {
+		return $this->html_attribs;
 	}
 	
 	/**

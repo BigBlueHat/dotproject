@@ -31,11 +31,11 @@ class DP_Query_Sort implements Iterator, SplSubject, DP_Originator_Interface {
 	/**
 	 * @var SORT_ASCENDING Sort a given field in ascending order.
 	 */
-	const SORT_ASCENDING = 0;
+	const SORT_ASCENDING = 100;
 	/**
 	 * @var SORT_DESCENDING Sort a given field in descending order.
 	 */
-	const SORT_DESCENDING = 1;
+	const SORT_DESCENDING = 101;
 	
 	public function __construct($id = -1) {
 		$this->_observers = Array();
@@ -110,6 +110,20 @@ class DP_Query_Sort implements Iterator, SplSubject, DP_Originator_Interface {
 		
 		// Notify observers of sorting rule changes.
 		$this->notify();
+	}
+	
+	/**
+	 * Get the sort rule for a given field
+	 * 
+	 * @return DP_Query_Sort::SORT_ASCENDING or DP_Query_Sort::SORT_DESCENDING or null
+	 */
+	public function getSort($field_name) 
+	{
+		if (in_array($field_name, array_keys($this->sorting_rules))) {
+			return $this->sorting_rules[$field_name];
+		} else {
+			return null;
+		}
 	}
 	
 	// From Iterator

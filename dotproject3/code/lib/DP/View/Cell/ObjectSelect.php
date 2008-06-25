@@ -7,15 +7,12 @@ class DP_View_Cell_ObjectSelect extends DP_View_Cell implements DP_View_Notifica
 	private $hrefprefix;
 	private $id_key;
 	
-	public function __construct($id_key, $attribs = Array()) {
+	public function __construct($id_key, $column_title = '(Untitled)', $attribs = Array()) {
 		// TODO - proper generation of parent id
-		parent::__construct('Cell-Select');
+		parent::__construct($id_key, $column_title, $attribs);
 		$this->id_key = $id_key;
 
 		$this->setHTMLAttribs($attribs);
-		
-		//$fc = Zend_Controller_Front::getInstance();
-		
 	}
 	
 	/**

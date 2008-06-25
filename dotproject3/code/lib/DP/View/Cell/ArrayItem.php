@@ -22,8 +22,8 @@ class DP_View_Cell_ArrayItem extends DP_View_Cell {
 	 */
 	private $item_key;
 	
-	public function __construct($items, $item_key, $attribs = array()) {
-		parent::__construct('cell');
+	public function __construct($items, $item_key, $column_title = '(Untitled)', $attribs = array()) {
+		parent::__construct($item_key, $column_title, $attribs);
 
 		$this->items = $items;
 		$this->item_key = $item_key;

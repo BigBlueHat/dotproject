@@ -18,5 +18,13 @@ interface DP_View_List_DataSource {
 	 * This gives the datasource a chance to refresh its query before the items are iterated through.
 	 */
 	public function clientWillRender();
+	
+	/**
+	 * Get an associative array containing keys of the column data to descriptive titles
+	 * of that column.
+	 * 
+	 * @return Array associative array column_name=>column_title
+	 */
+	public function getColumns();
 }
 ?>

@@ -1,11 +1,11 @@
 <div style="float: right; text-align: right; width: 200px;">
-	<a href="#" onclick="javascript:window.open('<?=$layout->baseUrl ?>/help/', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')"><?=$this->translate('Help')?></a><br />
-	<?php if ($layout->access_calendar) { ?>
-	         <b><a href="<?=$layout->baseUrl ?>/tasks/todo/"><?=$this->translate('Todo')?></a></b> |
-				<a href="<?=$layout->baseUrl ?>/calendar/day_view/?date={dPdateFormat date='now' format='db'}"><?=$this->translate('Today')?></a> |
+	<a href="#" onclick="javascript:window.open('<?=$this->layout()->baseUrl ?>/help/', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')"><?=$this->translate('Help')?></a><br />
+	<?php if ($this->layout()->access_calendar) { ?>
+	         <b><a href="<?=$this->layout()->baseUrl ?>/tasks/todo/"><?=$this->translate('Todo')?></a></b> |
+				<a href="<?=$this->layout()->baseUrl ?>/calendar/day_view/?date={dPdateFormat date='now' format='db'}"><?=$this->translate('Today')?></a> |
 	<?php } ?>
-	<?php if ($layout->access_links) {?>
-				<a href="<?=$layout->baseUrl ?>/links/"><?=$this->translate('Links')?></a> |
+	<?php if ($this->layout()->access_links) {?>
+				<a href="<?=$this->layout()->baseUrl ?>/links/"><?=$this->translate('Links')?></a> |
 	<?php } ?>
 	<a href="javascript:void(0);" onclick="window.print();return false;"><?=$this->translate('Print this page')?></a>				
 </div>
@@ -15,7 +15,7 @@
 </span>
 <br />
 <span style="">
-	<a href="<?=$layout->baseUrl ?>/admin/viewuser/?user_id=<?=$layout->user_id ?>" class="navlink"><?=$this->translate('My').' '.$this->translate('Info'); ?></a>
-	&nbsp;<a href="<?=$layout->baseUrl ?>/logout/" class="navlink"><?=$this->translate('Logout')?></a>
+	<a href="<?=$this->layout()->baseUrl ?>/admin/viewuser/?user_id=<?=$this->layout()->user_id ?>" class="navlink"><?=$this->translate('My').' '.$this->translate('Info'); ?></a>
+	&nbsp;<a href="<?=$this->layout()->baseUrl ?>/logout/" class="navlink"><?=$this->translate('Logout')?></a>
 </span>
 </div>

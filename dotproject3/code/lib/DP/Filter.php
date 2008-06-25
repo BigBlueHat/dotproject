@@ -231,7 +231,10 @@ class DP_Filter implements SplSubject, DP_Originator_Interface {
 	 * @param DP_Memento $m State memento.
 	 */
 	public function setMemento(DP_Memento $m) {
-		$this->filters = $m->getState();
+		$memento = $m->getState();
+		
+		$this->filters = $memento['filters'];
+		$this->next_fid = $memento['next_fid'];
 	}
 	
 	/**
@@ -240,7 +243,7 @@ class DP_Filter implements SplSubject, DP_Originator_Interface {
 	 * @return DP_Memento current state memento.
 	 */
 	public function createMemento() {
-		return new DP_Memento($this->filters);
+		return new DP_Memento(array('filters'=>$this->filters,'next_fid'=>$this->next_fid));
 	}
 }
 ?>

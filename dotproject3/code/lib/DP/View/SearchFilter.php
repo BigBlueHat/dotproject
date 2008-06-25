@@ -178,6 +178,7 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 		
 		// Save state changes
 		// TODO - instead of calling createMemento multiple times just call if changed.
+		// TODO - remove appui reference replace with Zend_Session
 		if ($filter_state != null) {
 			$AppUI = DP_AppUI::getInstance();
 			$AppUI->setState($this->id().'-filter', $filter_state);
