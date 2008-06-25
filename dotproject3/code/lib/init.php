@@ -26,5 +26,8 @@ if (! defined('DP_AUTOLOAD_INIT')) {
 	Zend_Session::setSaveHandler(new DP_Session_SaveHandler);
 	Zend_Session::start();
 	$session = new Zend_Session_Namespace('dPsession');
+	// Put the session into the registry, makes life a little easier.
+	$registry = new Zend_Registry(array('session' => $session));
+	Zend_Registry::setInstance($registry);
 }
 ?>
