@@ -4,8 +4,10 @@
 */
 
 .zend_form_container {
-	border: solid #aaaaaa 2px;
-	background: #d6ebff;	
+	border: solid #aaaaaa 1px;
+	background: #d6ebff;
+	margin-left: 10px;
+	margin-right: 10px;	
 }
 
 .zend_form {
@@ -65,12 +67,20 @@
 	padding-top: 2px;
 }
 
-.zend_form fieldset dd dl dd { 	
+.zend_form fieldset dl dd { 	
 	float: none; 
 	margin-left: 135px; 
 	margin-top: 0px; 
 	margin-bottom: 0px; 
 	padding-top: 2px; 
+}
+
+.zend_form_field {
+	float: none; 
+	margin-left: 135px; 
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	padding-top: 2px;
 }
 
 .zend_form fieldset#buttons {

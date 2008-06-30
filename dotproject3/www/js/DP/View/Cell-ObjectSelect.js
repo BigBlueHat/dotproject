@@ -79,7 +79,8 @@ ListSelection.prototype.delete = function(el_table_id)
 /* Select all checkboxes on the current page */
 ListSelection.prototype.selectAll = function(el_table_id) 
 {
-	var chks = dojo.query("[type=checkbox]", el_table_id);
+	//var chks = dojo.query("[type=checkbox]", el_table_id);
+	
 	
 	chks.forEach(function(cb) {
 		cb.checked = 'checked';

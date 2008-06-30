@@ -580,3 +580,8 @@ table.tbl td.event td {
 }
 
 .hidden {display:none;}
+
+#info {
+	margin: 5px;
+	text-align: center;
+}

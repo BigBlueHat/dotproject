@@ -4,8 +4,10 @@
 */
 
 .zend_form_container {
-	border: solid #aaaaaa 2px;
-	background: #d6ebff;	
+	border: solid #aaaaaa 1px;
+	background: #d6ebff;
+	margin-left: 10px;
+	margin-right: 10px;	
 }
 
 .zend_form {
@@ -29,7 +31,7 @@
 .zend_form fieldset.primary {
 	/* background: #c2d9eb; */
 	border: solid #96abbf 1px;
-	background: #b2c9db;
+	background: #e2efff;
 	margin-bottom: 15px;
 }
 
@@ -48,7 +50,7 @@
 .zend_form fieldset dt { 	
 	float: left;
 	text-align: right;
-	width: 200px;
+	width: 130px;
 	line-height: 100%;
 	margin-top: 0px;
 	margin-bottom: auto;
@@ -58,7 +60,7 @@
 .zend_form fieldset dd { 	
 	margin-top: 4px; 
 	margin-bottom: 4px; 
-	margin-left: 205px;
+	margin-left: 135px;
 	padding-top: 2px;
 	padding-left: 2px;
 	background-color: white;
