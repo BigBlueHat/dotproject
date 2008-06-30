@@ -29,18 +29,18 @@ class DP_Memcache_Wrapper
 	{
 		$this->_namespace = $namespace;
 		$this->_max_age = $max_age;
-		if (null === $use_compression) {
-			$use_compression = DP_Config::getBaseConfig()->memcached->compress;
-		}
-		$this->_flags = $use_compression ? MEMCACHE_COMPRESSED : 0;
-
-		$this->_memcache_available = DP_Config::getBaseConfig()->memcached->available;
+		$this->_memcache_available = isset(DP_Config::getBaseConfig()->memcached) && DP_Config::getBaseConfig()->memcached->available;
 		if ($this->_memcache_available) {
 			$this->_memcache_available = extension_loaded('memcache');
 		}
 		if ($this->_memcache_available) {
+			if (null === $use_compression) {
+				$use_compression = DP_Config::getBaseConfig()->memcached->compress;
+			}
+			$this->_flags = $use_compression ? MEMCACHE_COMPRESSED : 0;
+
 			$this->_memcache_object = new Memcache;
-			$pool = explode(';', DP_Config::getBaseConfig()->memcached->pool);
+			$pool = explode(',', DP_Config::getBaseConfig()->memcached->pool);
 			foreach ($pool as $server) {
 				$this->_memcache_object->addServer($server);
 			}

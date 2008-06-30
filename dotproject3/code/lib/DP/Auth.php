@@ -24,9 +24,9 @@ class DP_Auth
 		switch($adapter_name) {
 			case 'DbTable':
 			default:
-				$tbl = 'users';
-				$user_col = 'user_username';
-				$pass_col = 'user_password';
+				$tbl = 'people';
+				$user_col = 'uid';
+				$pass_col = 'userpassword';
 				
 				return new Zend_Auth_Adapter_DbTable(DP_Config::getDB(), $tbl, $user_col, $pass_col, 'MD5(?)');
 				break;				

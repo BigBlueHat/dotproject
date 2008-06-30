@@ -14,7 +14,7 @@ class DP_Acl
 	// Basically return true for anything we haven't yet coded.
 	public function __call($method, $args)
 	{
-		error_log('DP_Acl::'.$method.'()');
+		Zend_Registry::get('logger')->log('DP_Acl::'.$method.'()', Zend_Log::ALERT);
 		switch ($method) {
 			case 'getAllowedItems':
 			case 'getDeniedItems':

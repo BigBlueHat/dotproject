@@ -24,6 +24,12 @@ class DP_Table
 			case $module == 'companies':
 				return new Db_Table_Companies();
 				break;
+			case $module == 'people':
+				return new DP_Db_Table_People();
+				break;
+			case $module == 'orgunit':
+				return new Db_Table_Orgunits();
+				break;
 			default:
 				return null;	
 		}

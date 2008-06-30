@@ -20,8 +20,8 @@ class DP_View_Helper_ViewText extends Zend_View_Helper_FormElement
     {
     	$info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
-        $xhtml = '';
-    	//$xhtml = '<div>';
+        $xhtml = '&nbsp;';
+    	//$xhtml .= '<div>';
     	$xhtml .= $this->view->escape($value);
     	//$xhtml .= '</div>';
     	return $xhtml;

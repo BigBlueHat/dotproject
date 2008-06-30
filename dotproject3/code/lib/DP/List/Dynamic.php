@@ -69,7 +69,7 @@ class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, 
 	public function refresh() {
 		$db = DP_Config::getDB();
 		$stmt = $db->query($this->query);
-		Zend_Debug::dump((string)$this->query);
+		//Zend_Debug::dump((string)$this->query);
 		$result = $stmt->fetchAll();
 		$this->object_list = $result;
 		$this->needs_refresh = false;

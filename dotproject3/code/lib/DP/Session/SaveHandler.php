@@ -52,7 +52,6 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 	 */
 	function read($id)
 	{
-		error_log('session read: ' . $id);
 		$now = time();
 		if ($ret = $this->memcache->$id) {
 			$max = $now - $ret['start'];
@@ -96,17 +95,14 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 			}
 		}
 		catch (Exception $e) {
-			error_log('Exception occurred in session read, ' . $e->getMessage());
 			$data = '';
 		}
 
-		error_log('read returned ' . strlen($data) . ' bytes: '. $data);
 		return $data;
 	}
 
 	function write($id, $data)
 	{
-		error_log('session write: ' . $id);
 		$now = time();
 		if ($ret = $this->memcache->$id) {
 			$ret['updated'] = $now;
@@ -131,10 +127,7 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 		$qid = $this->db->fetchOne($sql);
 		$this->db->closeConnection();
 		//clear the database connection, for some reason an open connection doesn't work with another call to the database logic.
-		error_log('first pass, got count:' . $qid);
-		// error_log('created new query object');
 		if ( $qid > 0 ) {
-			error_log('updating session');
 			$sess = array(
 				'session_data' => $data,
 				'session_user' => 0,
@@ -142,7 +135,6 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 			);
 			$this->db->update('sessions', $sess, 'session_id = \'' . $id .'\'');
 		} else {
-			error_log('creating session');
 			$sess = array(
 				'session_id' => $id,
 				'session_data' => $data,
@@ -151,13 +143,11 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 			$this->db->insert('sessions', $sess);
 		}
 		$this->db->closeConnection();
-		error_log('write returned');
 		return true;
 	}
 
 	function destroy($id)
 	{
-		error_log('session destroy');
 		$q = new DP_Query(true);
 
 		if (($user_access_log_id = $last_insert_id))
@@ -179,13 +169,11 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 		$q->addWhere("session_id = '$id'");
 		$q->exec();
 		$q->clear();
-		error_log('detstroy returned');
 		return true;
 	}
 
 	function gc($maxlifetime)
 	{
-		error_log('session gc');
 		$now = time();
 		// Find all the session
 		if (isset($this->memcache->session_list)) {
@@ -247,7 +235,6 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 		if (DP_Config::getConfig('session_gc_scan_queue')) {
 			DP_EventQueue::scan();
 		}
-		error_log('gc returned');
 		return true;
 	}
 

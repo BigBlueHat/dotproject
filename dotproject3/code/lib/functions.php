@@ -16,6 +16,29 @@ $CR = "\n";
 define('SECONDS_PER_DAY', 60 * 60 * 24);
 
 /**
+ * Paths are relative to either the base or the code directory.
+ */
+function dPmakePath($path)
+{
+	$path_bits = explode(DIRECTORY_SEPARATOR, $path);
+	switch ($path_bits[0]) {
+		case '.':
+		case '..':
+		case 'DP_BASE_CODE':
+			return DP_BASE_CODE . DIRECTORY_SEPARATOR . $path;
+			break;
+		case 'DP_BASE_DIR':
+			return DP_BASE_DIR . DIRECTORY_SEPARATOR . $path;
+			break;
+		case 'DP_BASE_WWW':
+			return DP_BASE_WWW . DIRECTORY_SEPARATOR . $path;
+			break;
+		default:
+			return $path;
+	}
+}
+
+/**
  * Returns the best color based on a background color (x is cross-over)
  */
 
@@ -921,4 +944,5 @@ function dPrequiredFields($requiredFields)
 	}
 	return $buffer;
 }
+
 ?>
