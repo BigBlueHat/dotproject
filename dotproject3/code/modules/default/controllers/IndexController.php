@@ -1,6 +1,4 @@
 <?php
-require_once 'DP/Controller/Action.php';
-
 /**
  * This is the file containing the definition of the index controller for the default module
  * @author ajdonnison
@@ -14,17 +12,18 @@ require_once 'DP/Controller/Action.php';
  * @package dotproject
  * @subpackage default
  */
-class IndexController extends DP_Controller_Action
+class IndexController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
 
 	}
 	
-
-	
 	public function usernavAction() {
-		$this->view->user_name = Zend_Auth::getInstance()->getIdentity();
+		$identity = Zend_Auth::getInstance()->getIdentity();
+		$person = $identity['person'];
+
+		$this->view->user_name = $person->displayname;
 	}
 	
 	public function modulenavigationAction()
@@ -35,15 +34,19 @@ class IndexController extends DP_Controller_Action
 		
 		if ($auth->hasIdentity()) {
 		//if ($AppUI->user_id > 0) {
-			$nav = $AppUI->getMenuModules();
-			$perms =& $AppUI->acl();
-			
+			//$nav = $AppUI->getMenuModules();
+			//$perms =& $AppUI->acl();
+			$nav = Array(
+				Array('mod_directory'=>'orgunit', 'mod_ui_name'=>'OUs'),
+				Array('mod_directory'=>'people', 'mod_ui_name'=>'People'),
+				Array('mod_directory'=>'outline', 'mod_ui_name'=>'Outline')
+			);
 			$links = array();
 			
 			foreach ($nav as $module) {
-				if ($perms->checkModule($module['mod_directory'], 'access')) {
+				//if ($perms->checkModule($module['mod_directory'], 'access')) {
 					$links[] = $module; //'<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
-				}
+				//}
 			}
 			$this->view->modules = $links;
 			$fc = Zend_Controller_Front::getInstance();
@@ -87,16 +90,17 @@ class IndexController extends DP_Controller_Action
 		$AppUI = DP_AppUI::getInstance();
 		$layout = $this->_helper->layout();
 
+		/*
 		if (isset($AppUI)) {
 			$layout->version = $AppUI->getVersion();
 			$layout->user_id = $AppUI->user_id;
 			$layout->user_name = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
-		}
+		}*/
 
 		$layout->baseUrl = Zend_Controller_Front::getInstance()->getBaseUrl();
 		$layout->baseDir = DP_BASE_DIR;
 
-		$perms = $AppUI->acl();
+		//$perms = $AppUI->acl();
 		
 		$layout->page_title = $page_title;
 		$layout->charset = isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';

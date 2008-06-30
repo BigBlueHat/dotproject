@@ -115,20 +115,28 @@ class LoginController extends Zend_Controller_Action
 			$result = $auth->authenticate($authAdapter);
 			
 			if ($result->isValid()) {
+				$person = DP_Person::factory($auth->getIdentity());
+				// $undo_manager = DP_UndoManager::factory()
+				$user_session = Array(
+						'person'=>$person,
+						'undo'=>null
+				);
+
+				$auth->getStorage()->write($user_session);
+				
 				// write user table data into session
+				/*
 				$user_session = new DP_User_Session($auth->getIdentity());
 				$user_session->load();
-				$auth->getStorage()->write($user_session);
+				*/
 				
 				$redirect = urldecode($this->getRequest()->getParam('redirect'));
 				$this->getResponse()->setRedirect($redirect);
 				$this->getResponse()->sendHeaders();
-				error_log('Redirecting to '.$redirect);
+				//error_log('Redirecting to '.$redirect);
 				exit;
 			} else {
-				//$msg = $result->getMessages();
 				$this->_helper->FlashMessenger('Login Failed.');
-
 				$this->_forward('index');
 			}
 		}		
