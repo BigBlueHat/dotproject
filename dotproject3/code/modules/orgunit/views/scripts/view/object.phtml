@@ -1,0 +1,10 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform-view.css');
+?>
+<div id="projects-view-container" class="zend_form_container">
+	<h1 class="headtest"><?=$this->heading?></h1>
+	<div class="DP_View_Button" style="padding: 5px 5px 5px 5px;">
+	<button onClick="location = '/orgunit/edit/object/id/<?=$this->obj->getValue('id');?>';">Edit</button>
+	</div>
+	<?=$this->obj ?>
+</div>

@@ -1,0 +1,32 @@
+<?php
+$this->HeadScript()->appendFile('/js/yui/build/yahoo-dom-event/yahoo-dom-event.js');
+$this->HeadScript()->appendFile('/js/yui/build/dragdrop/dragdrop.js');
+$this->HeadScript()->appendFile('/js/yui/build/container/container.js');
+$this->HeadScript()->appendFile('/js/yui/build/utilities/utilities.js');
+$this->HeadScript()->appendFile('/js/yui/build/json/json.js');
+$this->HeadLink()->appendStylesheet('/css/outline.css');
+$this->HeadScript()->appendFile('/js/DP/Test/WbsList.js');
+$this->HeadScript()->appendFile('/js/DP/Test/WbsListItem.js');
+$this->HeadScript()->appendFile('/js/DP/Test/WbsListParser.js');
+$this->HeadScript()->appendFile('/js/DP/Test/WbsProject.js');
+$this->HeadScript()->appendScript("
+	function init() {
+		WbsList.create('wbs');
+		//WbsProject.create('wbsproject');
+	}
+
+	YAHOO.util.Event.onDOMReady(init);
+");
+?>
+
+<div class="wbs_dialog">
+	<div class="wbsproject" id="wbsproject">
+		<div class="project_label">Project name:</div>
+		<div class="project_input"><input type="text" size="50"></div>
+	</div>
+	<div class="fakeshadow"></div>
+	<ul id="wbs" class="wbsroot"></ul>
+	<div class="wbsproject">
+		<button onClick="WbsList.parser.parse('wbs')">Save Project</button>
+	</div>
+</div>
