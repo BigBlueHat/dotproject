@@ -3,7 +3,13 @@
 require_once ('Zend/Controller/Action.php');
 
 class Orgunit_IndexController extends Zend_Controller_Action {
-
+	public function ajaxAction() {
+		// Temporary test of YUI components with DP
+		
+		
+	}
+	
+	
 	public function indexAction() {		
 			
 		$index = new Orgunit_Index();

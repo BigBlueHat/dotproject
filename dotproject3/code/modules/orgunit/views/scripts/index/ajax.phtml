@@ -1,0 +1,31 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl.'/js/yui/build/treeview/assets/skins/sam/treeview.css');
+$this->HeadScript()->appendFile('/js/yui/build/yahoo-dom-event/yahoo-dom-event.js');
+$this->HeadScript()->appendFile('/js/yui/build/connection/connection.js');
+$this->HeadScript()->appendFile('/js/yui/build/treeview/treeview.js');
+//$this->main->viewWillRender($this);
+$this->HeadScript()->appendScript('
+	var tree;
+	function treeInit() {
+		tree = new YAHOO.widget.TreeView("orgtree");
+		tree.setDynamicLoad(loadDataForNode);
+		var root = tree.getRoot();
+		var tmpnode = new YAHOO.widget.TextNode("mylabel", root, false);
+		
+		tree.draw();
+	}
+	
+	function loadDataForNode(node, onCompleteCallback) {
+		var id = node.data.id;
+		var tmpNode = new YAHOO.widget.TextNode(id + "label1", node, false);
+		
+		var sUrl = "/orgunit/index/jsonchildren";
+		
+		var transaction = YAHOO.util.Connect.asyncRequest("GET", sUrl, callback, null); 
+		onCompleteCallback();
+	}
+	
+	YAHOO.util.Event.onDOMReady(treeInit);
+');
+?>
+<div id="orgtree"></div>

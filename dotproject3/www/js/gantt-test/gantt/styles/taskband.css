@@ -1,0 +1,61 @@
+@CHARSET "ISO-8859-1";
+/*
+div.timeline-gantt-taskband {
+    position:   absolute;
+    background: #eee;
+    z-index:    10;
+	//float: left;
+	width: 400px;
+}*/
+div#my-tasklist {
+	float: left;
+	width: 20%;
+}
+
+span.timeline-gantt-taskinfo-item {
+	font-size: 0.80em;
+}
+
+.timeline-gantt-taskband {
+    position:   absolute;
+    background: #eee;
+    z-index:    10;
+    width: 100%;
+}
+
+.timeline-gantt-taskband-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.timeline-gantt-taskband-input {
+    position:   absolute;
+    width:      1em;
+    height:     1em;
+    overflow:   hidden;
+    z-index:    0;
+}
+.timeline-gantt-taskband-input input{
+    width:      0;
+}
+
+.timeline-gantt-taskband-layer {
+    position:   absolute;
+    width:      100%;
+    height:     100%;
+}
+
+.timeline-gantt-taskband-layer-inner {
+    position:   relative;
+    width:      100%;
+    height:     100%;
+}
+
+.timeline-gantt-taskband-layer-inner div {
+	background-image: url('/img/gradient-bg.png'); 
+	background-repeat: repeat-x;
+	background-color: #ffffff;
+	padding-left: 5px;
+	padding-top: 2px;
+}

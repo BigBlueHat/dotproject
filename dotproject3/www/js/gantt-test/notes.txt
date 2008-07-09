@@ -1,0 +1,4 @@
+The gantt directory contains an extension for SIMILIE Timeline.
+
+The code contained in the gantt extension is in a broken state but contains much of the 
+added functionality needed to use Timeline as a gantt chart.
