@@ -9,7 +9,7 @@
  */
 
 
-class Projects_IndexController extends DP_Controller_Action {
+class Projects_IndexController extends Zend_Controller_Action {
 
 	public function indexAction() {
 

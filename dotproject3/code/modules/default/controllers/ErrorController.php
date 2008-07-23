@@ -14,7 +14,7 @@ require_once 'DP/Controller/Action.php';
  * @package dotproject
  * @subpackage default
  */
-class ErrorController extends DP_Controller_Action
+class ErrorController extends Zend_Controller_Action
 {
 	public function errorAction()
 	{

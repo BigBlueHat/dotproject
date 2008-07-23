@@ -1,5 +1,5 @@
 <?php
-class Contacts_ViewController extends DP_Controller_Action
+class Contacts_ViewController extends Zend_Controller_Action
 {
 	public function objectAction()
 	{

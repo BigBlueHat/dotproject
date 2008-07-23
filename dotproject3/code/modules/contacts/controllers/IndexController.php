@@ -7,7 +7,7 @@
  * @subpackage contacts
  * @version 3.0 alpha
  */
-class Contacts_IndexController extends DP_Controller_Action {
+class Contacts_IndexController extends Zend_Controller_Action {
 	
 	public function indexAction() {
 		$AppUI = DP_AppUI::getInstance();

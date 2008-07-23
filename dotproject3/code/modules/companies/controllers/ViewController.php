@@ -14,7 +14,7 @@
  * @package dotproject
  * @subpackage companies
  */
-class Companies_ViewController extends DP_Controller_Action
+class Companies_ViewController extends Zend_Controller_Action
 {
 	public function objectAction()
 	{

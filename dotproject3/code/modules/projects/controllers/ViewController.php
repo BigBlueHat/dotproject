@@ -1,5 +1,5 @@
 <?php
-class Projects_ViewController extends DP_Controller_Action
+class Projects_ViewController extends Zend_Controller_Action
 {
 	public function getForm()
 	{

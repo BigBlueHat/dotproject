@@ -12,7 +12,7 @@
  * @package dotproject
  * @subpackage default
  */
-class LogoutController extends DP_Controller_Action
+class LogoutController extends Zend_Controller_Action
 {
 	/**
 	 * Log a user out

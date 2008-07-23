@@ -1,5 +1,5 @@
 <?php
-class People_ViewController extends DP_Controller_Action
+class People_ViewController extends Zend_Controller_Action
 {
 	public function getForm()
 	{

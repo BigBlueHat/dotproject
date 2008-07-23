@@ -14,7 +14,7 @@
  * @package dotproject
  * @subpackage companies
  */
-class Companies_IndexController extends DP_Controller_Action
+class Companies_IndexController extends Zend_Controller_Action
 {
 	
 	/**
