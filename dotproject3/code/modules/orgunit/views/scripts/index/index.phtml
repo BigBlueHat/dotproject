@@ -1,6 +1,19 @@
 <?php
+$this->HeadLink()->appendStylesheet($this->baseUrl.'/css/dp-view.css');
 
-$this->headLink()->appendStylesheet($this->baseUrl.'/css/dp-view.css');
-$this->main->viewWillRender($this);
+$this->HeadScript()->appendFile('/js/yui/build/yahoo-dom-event/yahoo-dom-event.js');
+$this->HeadScript()->appendFile('/js/yui/build/connection/connection.js');
+$this->HeadScript()->appendFile('/js/yui/build/element/element-beta-min.js');
+
+//$this->HeadScript()->appendFile('/js/yui/build/treeview/treeview.js');
+$this->HeadScript()->appendFile('/js/yui/build/datatable/datatable-min.js');
+
+//$this->main->viewWillRender($this);
 ?>
-<?=$this->main;?>
+
+<?=$this->DataTable();?>
+
+<?
+
+//=$this->main;
+?>
