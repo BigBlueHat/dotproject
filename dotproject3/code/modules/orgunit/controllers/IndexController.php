@@ -16,6 +16,10 @@ class Orgunit_IndexController extends Zend_Controller_Action {
 		$list_view_id = 'dp-ou-index';
 		$this_url = $this->_helper->Url('index','index','orgunit');
 		
+		// TODO: Replace DP_View titleblock with View helper titleblock
+		// view helper should disseminate crumbs from controller / action / parameters
+		// may add dhtml menus to certain crumbs later
+		
 		$title_block = $this->_helper->TitleBlock('');
 		$title_block->addCrumb('/orgunit', 'Organizational Units');	
 		$this->view->heading = "Organizational Units"; // @todo translate		
@@ -75,6 +79,14 @@ class Orgunit_IndexController extends Zend_Controller_Action {
 		
 		$index->clientWillRender();
 		
+		// Assign the DataSource
+		$this->view->index = $index;
+		$out = new Db_Table_Orgunits();
+		$cols = new DP_YUI_ColumnDefs($out);
+		$this->view->cols = $cols;
+		//$this->view->out = $out;
+		//$coldata = $out->info('metadata');
+		//print_r($coldata);
 		// Assign contacts view
 		$this->view->main = $ou_list_view;
 		//$this->view->titleblock = $title_block;	

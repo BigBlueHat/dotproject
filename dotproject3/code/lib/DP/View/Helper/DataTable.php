@@ -23,15 +23,30 @@ class DP_View_Helper_DataTable extends Zend_View_Helper_Abstract
 	public function DataTable()
 	{
 		$id = "myDataTable";
-		$colDefs = "myColDefs";
-		$dataSource = "myDataSource";
+		
+		$js_cols = '		
+			var myDataTableDS = new YAHOO.util.XHRDataSource("http://dp3/orgunit/json/index", {responseType : YAHOO.util.DataSource.TYPE_JSON});
+			myDataTableDS.responseSchema = {
+				resultsList: "results",
+				fields: [
+					{ key: "id" },
+					{ key: "name" },
+					{ key: "description"}
+				]
+			};
+		';
+		$this->view->HeadScript()->appendScript($js_cols);
 		
 		// Add the construction code.
-		$js = 'var '.$id.' = new YAHOO.widget.DataTable("'.$id.'-ctr", '.$colDefs.', '.$dataSource.');';
+		$js = 'YAHOO.util.Event.addListener(window, "load", function() {
+		';
+		$js .= '	var '.$id.' = new YAHOO.widget.DataTable("'.$id.'Ctr", '.$id.'Cols, '.$id.'DS);
+		
+		});';
 		$this->view->HeadScript()->appendScript($js);
 		
 		
-		$container = '<div id="'.$id.'-ctr"></div>';
+		$container = '<div class="yui-skin-sam"><div id="'.$id.'Ctr"></div></div>';
 		return $container;
 	}
 

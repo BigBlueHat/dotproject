@@ -27,6 +27,18 @@ class Orgunit_JsonController extends Zend_Controller_Action
 	 */
     public function indexAction() 
     {
+    	$this->_helper->layout->disableLayout();
+    	
+    	$db = DP_Config::getDB();
+		Zend_Db_Table::setDefaultAdapter($db);
+    	
+        $ous = new Db_Table_Orgunits();
+        $ous_records = $ous->fetchAll();
+        
+        $response = Array("results"=>$ous_records->toArray(), "totalRecords"=>$ous_records->count());
+        $ous_json = Zend_Json::encode($response);
+
+        $this->view->json_data = $ous_json;
         
     }
     
@@ -67,4 +79,3 @@ class Orgunit_JsonController extends Zend_Controller_Action
     
 }
 ?>
-
