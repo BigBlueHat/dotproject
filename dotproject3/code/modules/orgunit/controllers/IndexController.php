@@ -93,14 +93,9 @@ class Orgunit_IndexController extends Zend_Controller_Action {
 		$this->view->json_iface = $json_iface;
 		
 		$cols = $ds->makeColsFromMetadata();
+		$cols->setLabels(Array('id'=>'#','name'=>'Company name','description'=>'Company description'));
 		
 		$this->view->cols = $cols;
-		//$this->view->out = $out;
-		//$coldata = $out->info('metadata');
-		//print_r($coldata);
-		// Assign contacts view
-		//$this->view->main = $ou_list_view;
-		//$this->view->titleblock = $title_block;	
 	
 	}
 }

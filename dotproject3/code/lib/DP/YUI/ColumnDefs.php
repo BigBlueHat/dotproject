@@ -66,6 +66,13 @@ class DP_YUI_ColumnDefs implements Iterator, Countable {
 		);
 	}
 	
+	public function setLabels(Array $cols_labels)
+	{
+		$this->labels = $cols_labels;
+	}
+	
+	// From Countable
+	
 	public function count() {
 		return count($this->table_meta);
 	}

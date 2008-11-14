@@ -24,7 +24,7 @@ class DP_View_Helper_YUIColumnDefs extends Zend_View_Helper_Abstract
 			$js .= '{ ';
 			
 			$js .= 'key: "'.$def['key'].'", ';
-			$js .= 'label: "'.$def['key'].'", ';
+			$js .= 'label: "'.$def['label'].'", ';
 			$js .= 'formatter: "'.$def['formatter'].'", ';
 			$js .= 'editor: '.$def['editor'].'';
 			

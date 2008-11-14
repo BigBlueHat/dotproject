@@ -27,7 +27,12 @@ class DP_Presentation_Json
 	 * @var string $action name of an action (which becomes the data source identifier)
 	 */
 	private $action;
-	
+
+	/**
+	 * @var string $results_key index(es) to the results array in the json response.
+	 */
+	protected $results_key;
+
 	
 	/**
 	 * DP_Presentation_Json Constructor Method.
@@ -41,6 +46,17 @@ class DP_Presentation_Json
 		$this->module = $module;
 		$this->controller = $controller;
 		$this->action = $action;
+		$this->results_key = "results";
+	}
+	
+	public function setResultsKey($rk)
+	{
+		$this->results_key = $rk;
+	}
+	
+	public function getResultsKey()
+	{
+		return $this->results_key;
 	}
 	
 	/**
