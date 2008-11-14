@@ -13,13 +13,8 @@ $this->HeadScript()->appendFile('/js/yui//build/connection/connection-min.js');
 
 $this->HeadScript()->appendFile('/js/yui/build/datatable/datatable-min.js');
 
+$this->DataSource('myDataTableDS', $this->json_iface);
 $this->YUIColumnDefs($this->cols);
-//$this->main->viewWillRender($this);
-?>
 
+?>
 <?=$this->DataTable();?>
-
-<?
-
-//=$this->main;
-?>

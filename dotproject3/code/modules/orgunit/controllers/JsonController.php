@@ -24,6 +24,8 @@ class Orgunit_JsonController extends Zend_Controller_Action
 	 * the data should be reloaded. The event singleton in javascript will dispatch this reload event to all view widgets whose data depends on this
 	 * data source. If the filtering criteria causes an error then the server returns only an encapsulated event to say that the query failed for whatever reason.
 	 * The filters can then be reverted to the previous state if possible (after displaying a dialog).
+	 * 
+	 * The "index" action represents the "index" datasource
 	 */
     public function indexAction() 
     {

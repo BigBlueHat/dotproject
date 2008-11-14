@@ -11,7 +11,7 @@ class Orgunit_IndexController extends Zend_Controller_Action {
 	
 	
 	public function indexAction() {		
-			
+		/*	
 		$index = new Orgunit_Index();
 		$list_view_id = 'dp-ou-index';
 		$this_url = $this->_helper->Url('index','index','orgunit');
@@ -70,25 +70,36 @@ class Orgunit_IndexController extends Zend_Controller_Action {
 		// Update state from request vars
 		$ou_list_view->updateStateFromServer($this->getRequest());
 		
-		$db = DP_Config::getDB();
-		Zend_Db_Table::setDefaultAdapter($db);
+
 		
 		if ($select_tools->objectsChanged()) {
 			$select_tools->updateObjects(new Db_Table_Orgunits());
 		}
 		
 		$index->clientWillRender();
-		
+		*/
+				$db = DP_Config::getDB();
+		Zend_Db_Table::setDefaultAdapter($db);
 		// Assign the DataSource
-		$this->view->index = $index;
-		$out = new Db_Table_Orgunits();
-		$cols = new DP_YUI_ColumnDefs($out);
+		//$this->view->index = $index;
+		//$out = new Db_Table_Orgunits();
+		
+		$module = $this->getRequest()->getModuleName();
+		
+		$ds = new Orgunit_DataSource_Index();
+		$json_iface = new DP_Presentation_Json($module, 'json', 'index'); // New json interface at /orgunit/json/index to Orgunit_DataSource_Index
+		
+		$this->view->datasource = $ds;
+		$this->view->json_iface = $json_iface;
+		
+		$cols = $ds->makeColsFromMetadata();
+		
 		$this->view->cols = $cols;
 		//$this->view->out = $out;
 		//$coldata = $out->info('metadata');
 		//print_r($coldata);
 		// Assign contacts view
-		$this->view->main = $ou_list_view;
+		//$this->view->main = $ou_list_view;
 		//$this->view->titleblock = $title_block;	
 	
 	}

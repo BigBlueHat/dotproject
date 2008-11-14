@@ -23,9 +23,9 @@ class DP_View_Helper_DataTable extends Zend_View_Helper_Abstract
 	public function DataTable()
 	{
 		$id = "myDataTable";
-		
+		//var myDataTableDS = new YAHOO.util.XHRDataSource("http://dp3/orgunit/json/index", {responseType : YAHOO.util.DataSource.TYPE_JSON});
 		$js_cols = '		
-			var myDataTableDS = new YAHOO.util.XHRDataSource("http://dp3/orgunit/json/index", {responseType : YAHOO.util.DataSource.TYPE_JSON});
+			
 			myDataTableDS.responseSchema = {
 				resultsList: "results",
 				fields: [
