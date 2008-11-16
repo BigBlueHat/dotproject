@@ -27,10 +27,12 @@ class DP_DataSource
 	
 	/**
 	 * Make column definitions using the table metadata extracted by Zend_Db_Table.
+	 * 
+	 * @return DP_Datasource_Columns instance of columns object.
 	 */
 	public function makeColsFromMetadata()
 	{
-		return new DP_YUI_ColumnDefs($this->tbl);
+		return new DP_Datasource_Columns($this->tbl);
 	}
 }
 ?>

@@ -12,12 +12,14 @@
  * @version 3.0 alpha
  * @package dotproject
  */
-class DP_YUI_ColumnDefs implements Iterator, Countable {
+class DP_Datasource_Columns implements Iterator, Countable {
 	/**
 	 * @var array $table_meta Table column metadata.
 	 */
 	protected $table_meta; 
-	
+	/**
+	 * @var array $table_meta_keys Array of keys to table column metadata.
+	 */
 	protected $table_meta_keys;
 	/**
 	 * @var integer $object_iter_idx Iterator index.
@@ -27,16 +29,31 @@ class DP_YUI_ColumnDefs implements Iterator, Countable {
 	 * @var array $labels Column header labels.
 	 */
 	protected $labels;
-	
+	/**
+	 * @var array $enabled_columns Column keys of columns that should be outputted.
+	 */
 	protected $enabled_columns;
 	
+	/**
+	 * Datasource columns constructor.
+	 * 
+	 * @param Zend_Db_Table $tbl The instance of zend_db_table to extract column metadata from.
+	 */
 	public function __construct(Zend_Db_Table $tbl) {
 		$this->table_meta = $tbl->info('metadata');
 		$this->table_meta_keys = array_keys($this->table_meta);
 		$this->object_iter_idx = 0;
-		$this->enabled_columns = Array("id", "name", "description");
+		$this->enabled_columns = Array("id", "name", "description"); // TODO: un hard-code columns
 	}
 	
+	/**
+	 * Generate reasonable YUI column defaults for formatting and editing.
+	 * 
+	 * @param mixed $key Array key of a column in the table metadata.
+	 * @param Array $column table column metadata
+	 * 
+	 * @return Array associative array representing a YUI DataTable column definition.
+	 */
 	private function _toYuiDef($key, array $column) {
 		switch($column['DATA_TYPE'])
 		{

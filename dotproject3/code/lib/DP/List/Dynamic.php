@@ -6,6 +6,8 @@
  * @package dotproject
  * @subpackage system
  * @version 3.0 alpha
+ * 
+ * @deprecated replaced by DP_DataSource
  */
 class DP_List_Dynamic implements Countable, Iterator, ArrayAccess, SplObserver, DP_View_List_DataSource {
 	/**

@@ -7,16 +7,24 @@
  * 
  * @package dotproject
  * @version 3.0 alpha
- *
+ * @author ebrosnan
  */
 class DP_View_Helper_YUIColumnDefs extends Zend_View_Helper_Abstract 
 {
 	/**
-	 * @var Zend_View_Interface $view The current view object.
+	 * @var Zend_View $view Reference to the calling view object.
 	 */
 	public $view;
 	
-	public function YUIColumnDefs(DP_YUI_ColumnDefs $cols) {
+	/**
+	 * Generate YUI datatable columns definition.
+	 * 
+	 * Uses the HeadScript helper to append the definition.
+	 * 
+	 * @param DP_YUI_ColumnDefs $cols Instance of column definitions object.
+	 * @return null
+	 */
+	public function YUIColumnDefs(DP_Datasource_Columns $cols) {
 		
 		$js = 'var myDataTableCols = [';
 		
@@ -38,7 +46,6 @@ class DP_View_Helper_YUIColumnDefs extends Zend_View_Helper_Abstract
 	
 		$this->view->HeadScript()->appendScript($js);
 	}
-	
 	
 	
 	// From Zend_View_Helper_Abstract
