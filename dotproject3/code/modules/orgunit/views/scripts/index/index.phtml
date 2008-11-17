@@ -21,6 +21,10 @@ $this->HeadScript()->appendFile('/js/yui//build/connection/connection-min.js');
 $this->HeadScript()->appendFile('/js/yui/build/datatable/datatable-min.js');
 $this->HeadScript()->appendFile('/js/yui/build/treeview/treeview.js');
 
+$this->HeadScript()->appendFile('/js/DP.js');
+$this->HeadScript()->appendFile('/js/DP/Datasource/Filter.js');
+$this->HeadScript()->appendFile('/js/DP/Widget/Search.js');
+
 // Construction Code
 
 // OrgUnits Datasource and Column Definitions
@@ -29,11 +33,14 @@ $this->HeadScript()->appendScript($this->DataSource('ou_datasource', $this->orgu
 	var ou_columns = '.$this->YUIColumnDefs($this->orgunit_columns).'
 ');
 
-//  DataTable Construction
+// DataTable Construction
 $this->HeadScript()->appendScript('
 	YAHOO.util.Event.addListener(window, "load", function() {
 		var OuDataTable = new YAHOO.widget.DataTable("OuTableDiv", ou_columns, ou_datasource);
+		var OuSearch = new DP.Widget.Search("OuSearchText", "OuSearchButton");
 	});
 ');
 ?>
+<input type="text" id="OuSearchText" />
+<button id="OuSearchButton">Search</button>
 <div id="OuTableDiv" class="yui-skin-sam"></div>

@@ -81,7 +81,7 @@ class DP_Datasource_Columns implements Iterator, Countable {
 		}
 		
 		// Use the column name if the label is not available.
-		$label = ($this->labels[$key] != null) ? $this->labels[$key] : $key;
+		$label = (isset($this->labels[$key])) ? $this->labels[$key] : $key;
 		
 		return array(
 			"key"=>$key,
@@ -115,7 +115,7 @@ class DP_Datasource_Columns implements Iterator, Countable {
 	 */
 	public function current() {
 		$meta = $this->table_meta[$this->enabled_columns[$this->object_iter_idx]];
-		$meta_key = $this->table_meta_keys[$this->object_iter_idx];
+		$meta_key = $this->enabled_columns[$this->object_iter_idx];
 		
 		$definition = $this->_toYuiDef($meta_key, $meta);
 		

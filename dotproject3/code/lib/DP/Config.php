@@ -42,7 +42,7 @@ class DP_Config
 				$db = Zend_Db::factory($base_config->database);
 				$db->setFetchMode(Zend_Db::FETCH_ASSOC);
 			}
-			catch(Execption $e) {
+			catch(Exception $e) {
 				error_log('exception caught in DP_Session::getDB construct');
 			}
 		} else {

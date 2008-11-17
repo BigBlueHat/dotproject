@@ -34,21 +34,13 @@ class Orgunit_JsonController extends Zend_Controller_Action
     	$db = DP_Config::getDB();
 		Zend_Db_Table::setDefaultAdapter($db);
     	
-		// Get datasource from module factory by identifier
-		// Get json presentation from module factory by identifier
-		// Both supply reasonable default state, and also use DP_Config to customise output
-		// such as columns shown / translations etc.
-		// Use json presentation to determine selected fields.
 		$ous = Orgunit_DataSource::factory($this, "index");
+        $ous_json = $ous->fetch(); // Fetch result using default presentation (Json)
         
-        $ous_records = $ous->fetch();
-        
-        $response = Array("results"=>$ous_records->toArray(), "totalRecords"=>$ous_records->count());
-        $ous_json = Zend_Json::encode($response);
-
         $this->view->json_data = $ous_json;
-        
     }
+    
+
     
     /**
      * Retrieve a single record

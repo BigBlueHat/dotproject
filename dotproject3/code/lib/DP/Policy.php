@@ -78,7 +78,7 @@ class DP_Policy extends Zend_Db_Table
 
 	public function canAddChild($table, $type = DP_Policy::GROUP_MEMBER)
 	{
-		$this->loadPolicy():
+		$this->loadPolicy();
 		return ($this->_policies[$table][$type] & DP_Policy::ACCESS_CHILD) == DP_Policy::ACCESS_CHILD;
 	}
 

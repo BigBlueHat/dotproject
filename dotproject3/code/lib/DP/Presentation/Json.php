@@ -125,6 +125,17 @@ class DP_Presentation_Json extends DP_Presentation
 		return '/'.$this->module.'/'.$this->controller.'/'.$this->action;
 	}
 	
+	/**
+	 * Translate the result set to this presentation type.
+	 *
+	 * @param array $rows
+	 */
+    public function translate($rows)
+    {
+    	$response = Array("results"=>$rows->toArray(), "totalRecords"=>$rows->count());
+    	return Zend_Json::encode($response);
+    }
+    
 	// Static Methods
 	
 	/**
