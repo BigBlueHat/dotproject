@@ -1,20 +1,39 @@
 <?php
+// Style Sheets
+
 $this->HeadLink()->appendStylesheet($this->baseUrl.'/css/dp-view.css');
 $this->HeadLink()->appendStylesheet($this->baseUrl.'/js/yui/build/datatable/assets/skins/sam/datatable.css');
+
+// DOM Helpers / Utilities
+
 $this->HeadScript()->appendFile('/js/yui/build/yahoo-dom-event/yahoo-dom-event.js');
 $this->HeadScript()->appendFile('/js/yui/build/connection/connection.js');
 $this->HeadScript()->appendFile('/js/yui/build/element/element-beta-min.js');
 
-//$this->HeadScript()->appendFile('/js/yui/build/treeview/treeview.js');
-$this->HeadScript()->appendFile('/js/yui/build/datasource/datasource-min.js');
+// Datasource / Connection
 
+$this->HeadScript()->appendFile('/js/yui/build/datasource/datasource-min.js');
 $this->HeadScript()->appendFile('/js/yui/build/json/json-min.js');
 $this->HeadScript()->appendFile('/js/yui//build/connection/connection-min.js');
 
+// GUI Elements
+
 $this->HeadScript()->appendFile('/js/yui/build/datatable/datatable-min.js');
+$this->HeadScript()->appendFile('/js/yui/build/treeview/treeview.js');
 
-$this->DataSource('myDataTableDS', $this->json_iface);
-$this->YUIColumnDefs($this->cols);
+// Construction Code
 
+// OrgUnits Datasource and Column Definitions
+$this->HeadScript()->appendScript($this->DataSource('ou_datasource', $this->orgunit_json_pres).'
+	ou_datasource.responseSchema = '.$this->ResponseSchema($this->orgunit_json_pres->getResponseSchema()).'
+	var ou_columns = '.$this->YUIColumnDefs($this->orgunit_columns).'
+');
+
+//  DataTable Construction
+$this->HeadScript()->appendScript('
+	YAHOO.util.Event.addListener(window, "load", function() {
+		var OuDataTable = new YAHOO.widget.DataTable("OuTableDiv", ou_columns, ou_datasource);
+	});
+');
 ?>
-<?=$this->DataTable();?>
+<div id="OuTableDiv" class="yui-skin-sam"></div>

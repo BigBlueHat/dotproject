@@ -38,12 +38,18 @@ class DP_Datasource_Columns implements Iterator, Countable {
 	 * Datasource columns constructor.
 	 * 
 	 * @param Zend_Db_Table $tbl The instance of zend_db_table to extract column metadata from.
+	 * @param Array $columns Optional array of column keys to use when generating from database.
 	 */
-	public function __construct(Zend_Db_Table $tbl) {
+	public function __construct(Zend_Db_Table $tbl, $columns = Array()) {
 		$this->table_meta = $tbl->info('metadata');
 		$this->table_meta_keys = array_keys($this->table_meta);
 		$this->object_iter_idx = 0;
-		$this->enabled_columns = Array("id", "name", "description"); // TODO: un hard-code columns
+		if (count($columns) < 1) {
+			$this->enabled_columns = $this->table_meta_keys;
+		} else {
+			$this->enabled_columns = $columns;
+		}
+		
 	}
 	
 	/**
@@ -74,13 +80,21 @@ class DP_Datasource_Columns implements Iterator, Countable {
 				$editor = 'YAHOO.widget.DataTable.TextboxCellEditor';
 		}
 		
+		// Use the column name if the label is not available.
+		$label = ($this->labels[$key] != null) ? $this->labels[$key] : $key;
+		
 		return array(
 			"key"=>$key,
-			"label"=>$this->labels[$key],
+			"label"=>$label,
 			"formatter"=>$formatter,
 			"editor"=>$editor,
 		
 		);
+	}
+	
+	public function setEnabled(Array $column_keys) 
+	{
+		$this->enabled_columns = $column_keys;
 	}
 	
 	public function setLabels(Array $cols_labels)

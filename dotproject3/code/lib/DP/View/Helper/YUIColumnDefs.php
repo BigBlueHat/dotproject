@@ -22,11 +22,11 @@ class DP_View_Helper_YUIColumnDefs extends Zend_View_Helper_Abstract
 	 * Uses the HeadScript helper to append the definition.
 	 * 
 	 * @param DP_YUI_ColumnDefs $cols Instance of column definitions object.
-	 * @return null
+	 * @return string javascript object containing column definitions as string, without variable name
 	 */
 	public function YUIColumnDefs(DP_Datasource_Columns $cols) {
 		
-		$js = 'var myDataTableCols = [';
+		$js = '[';
 		
 		foreach($cols as $k=>$def) {
 			$js .= '{ ';
@@ -44,7 +44,8 @@ class DP_View_Helper_YUIColumnDefs extends Zend_View_Helper_Abstract
 		
 		$js .= ']';
 	
-		$this->view->HeadScript()->appendScript($js);
+		//$this->view->HeadScript()->appendScript($js);
+		return $js;
 	}
 	
 	
