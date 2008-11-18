@@ -23,6 +23,7 @@ $this->HeadScript()->appendFile('/js/yui/build/treeview/treeview.js');
 
 $this->HeadScript()->appendFile('/js/DP.js');
 $this->HeadScript()->appendFile('/js/DP/Datasource/Filter.js');
+$this->HeadScript()->appendFile('/js/DP/Debug/Observer.js');
 $this->HeadScript()->appendFile('/js/DP/Widget/Search.js');
 
 // Construction Code
@@ -43,4 +44,5 @@ $this->HeadScript()->appendScript('
 ?>
 <input type="text" id="OuSearchText" />
 <button id="OuSearchButton">Search</button>
+<div id="OuTreeView"></div>
 <div id="OuTableDiv" class="yui-skin-sam"></div>

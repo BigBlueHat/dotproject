@@ -1,7 +1,8 @@
 
 
 DP.Datasource.Filter = function() {
-	
+	this._text = "";
+	this._observers = [];
 }
 
 DP.Datasource.Filter.String = function() {
@@ -11,6 +12,7 @@ DP.Datasource.Filter.String = function() {
 
 DP.Datasource.Filter.prototype.setValue = function(v) {
 	this._text = v;
+	this.notify();
 }
 
 DP.Datasource.Filter.prototype.getValue = function() {
@@ -51,5 +53,5 @@ DP.Datasource.Filter.prototype.notify = function() {
 }
 
 DP.Datasource.Filter.factory = function(ftype) {
-	return new DP.Datasource.Filter.String();
+	return new DP.Datasource.Filter();
 }
