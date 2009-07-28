@@ -558,7 +558,7 @@ class CEvent extends CDpObject {
 			$user_id = $AppUI->user_id;
 		}
 		
-		$project =& new CProject;
+		$project = new CProject;
 		if ($project_id) {
 			$p =& $AppUI->acl();
 			
@@ -749,10 +749,10 @@ class CEvent extends CDpObject {
 		$time_format = $AppUI->getPref('TIMEFORMAT');
 		$fmt = $date_format . ' ' . $time_format;
 		
-		$start_date =& new CDate($this->event_start_date);
-		$end_date =& new CDate($this->event_end_date);
+		$start_date = new CDate($this->event_start_date);
+		$end_date = new CDate($this->event_end_date);
 		
-		$mail =& new Mail;
+		$mail = new Mail;
 		$type = (($update) ? $AppUI->_('Updated') : $AppUI->_('New'));
 		$subject_title = (($clash) ? ($AppUI->_('Requested Event')) 
 		                  : ($type . " " . $AppUI->_('Event')));

@@ -159,7 +159,7 @@ if ($do_report) {
 		$q->addWhere("task_percent_complete < 100");
 	}
 
-	$obj =& new CTask;
+	$obj = new CTask;
 	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
 	if (count($allowedTasks)) {
 		$obj->getAllowedSQL($AppUI->user_id, $q);
@@ -224,7 +224,7 @@ if ($log_pdf) {
 		
 		require($AppUI->getLibraryClass('ezpdf/class.ezpdf'));
 
-		$pdf =& new Cezpdf($paper='A4',$orientation='landscape');
+		$pdf = new Cezpdf($paper='A4',$orientation='landscape');
 		$pdf->ezSetCmMargins(1, 2, 1.5, 1.5);
 		$pdf->selectFont("$font_dir/Helvetica.afm");
 

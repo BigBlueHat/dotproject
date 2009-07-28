@@ -53,7 +53,7 @@ $showfields = array(
 );
 
 require_once $AppUI->getModuleClass('companies');
-$company =& new CCompany;
+$company = new CCompany;
 $allowedCompanies = $company->getAllowedSQL($AppUI->user_id);
 
 // assemble the sql statement

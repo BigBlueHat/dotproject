@@ -17,7 +17,7 @@
 // |	Richard Tango-Lowy <richtl@arscognita.com>                                  |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: ADOdb.php,v 1.3 2005/05/18 06:58:47 jlim Exp $
 //
 
 require_once 'Auth/Container.php';
@@ -35,7 +35,7 @@ require_once 'adodb-errorpear.inc.php';
  *
  * @author   Richard Tango-Lowy <richtl@arscognita.com>
  * @package  Auth
- * @version  $Revision$
+ * @version  $Revision: 1.3 $
  */
 class Auth_Container_ADOdb extends Auth_Container
 {
@@ -99,7 +99,7 @@ class Auth_Container_ADOdb extends Auth_Container
     {
         if (is_string($dsn) || is_array($dsn)) {
         	if(!$this->db) {
-	        	$this->db = &ADONewConnection($dsn);
+	        	$this->db = ADONewConnection($dsn);
 	    		if( $err = ADODB_Pear_error() ) {
 	   	    		return PEAR::raiseError($err);
 	    		}

@@ -513,7 +513,7 @@ display as opposed the first level.
 
 Also some minor format clean-up and removed obsolete 
 use of '=&' assignment operator in conjunction with 
-the 'new' operator (i.e. $t =& new Task();). 
+the 'new' operator (i.e. $t = new Task();). 
 
 
 ------------------------------------------------------------------------

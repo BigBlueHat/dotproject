@@ -133,10 +133,10 @@ if ($do_report) {
 		$q->addWhere("t.task_project='$project_id'");
 	}
 
-	$proj =& new CProject;
+	$proj = new CProject;
 	$proj->setAllowedSQL($AppUI->user_id, $q);
 
-	$obj =& new CTask;
+	$obj = new CTask;
 	$obj->setAllowedSQL($AppUI->user_id, $q);
 	
 	$task_list_hash   = $q->loadHashList('task_id');
