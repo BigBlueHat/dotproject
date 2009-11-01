@@ -12,6 +12,7 @@ else
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<meta name="Description" content="dotProject Default Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset($locale_char_set) ? $locale_char_set : 'UTF-8';?>" />
@@ -26,7 +27,7 @@ else
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
 	<td><table width="100%" cellpadding="3" cellspacing="0" border="0"><tr>
-	<th style="background: url(style/<?php echo $uistyle;?>/images/titlegrad.jpg)" class="banner" align="left"><strong><?php
+	<th style="background: url(style/<?php echo $uistyle;?>/images/titlegrad.jpg);" class="banner" align="left"><strong><?php
 		echo "<a style='color: white' href='{$dPconfig['base_url']}'>$page_title</a>";
 	?></strong></th>
 	<th align="right" width='50'><a href='http://www.dotproject.net/' <?php if ($dialog) echo "target='_blank'"; ?>><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border="0" /></a></th>
