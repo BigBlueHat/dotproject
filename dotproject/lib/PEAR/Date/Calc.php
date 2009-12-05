@@ -86,6 +86,10 @@ if (!defined('DATE_CALC_FORMAT')) {
  * @link       http://pear.php.net/package/Date
  * @since      Class available since Release 1.2
  */
+
+//dotProject custom mb_* compatibility functions for custom calls to mb_convert_encoding()
+require_once ($baseDir . '/includes/dP_compat.php');
+
 class Date_Calc
 {
     // {{{ dateFormat()
@@ -472,7 +476,12 @@ class Date_Calc
      */
     function dateNow($format = DATE_CALC_FORMAT)
     {
-        return strftime($format, time());
+        global $locale_char_set;
+        $now_date = strftime($format,time());
+        if ($locale_char_set != 'iso-8859-1') {
+            $now_date = mb_convert_encoding($now_date, $locale_char_set, 'iso-8859-1');
+        }
+        return $now_date;
     }
 
     // }}}
@@ -713,12 +722,20 @@ class Date_Calc
      * @static
      */
     function getMonthNames()
-    {
-        $months = array();
-        for ($i = 1; $i < 13; $i++) {
-            $months[$i] = strftime('%B', mktime(0, 0, 0, $i, 1, 2001));
-        }
-        return $months;
+    { // dotProject-modified function
+        global $Date_Calc_months;
+        global $locale_char_set; 
+		    if (!(isset($Date_Calc_months))) {
+                $Date_Calc_months = array();
+                for($i=1;$i<13;$i++){
+                    $Date_Calc_months[$i] = strftime('%B', mktime(0, 0, 0, $i, 1, 2001));
+                    if ($locale_char_set != 'iso-8859-1') {
+                     $Date_Calc_months[$i] = mb_convert_encoding($Date_Calc_months[$i], 
+                                                                 $locale_char_set, 'iso-8859-1');
+                }
+		    }
+	    }
+        return($Date_Calc_months);
     }
 
     // }}}
@@ -740,11 +757,20 @@ class Date_Calc
      */
     function getWeekDays()
     {
-        $weekdays = array();
-        for ($i = 0; $i < 7; $i++) {
-            $weekdays[$i] = strftime('%A', mktime(0, 0, 0, 1, $i, 2001));
-        }
-        return $weekdays;
+	global $Date_Calc_weekdays;
+    global $locale_char_set;
+	if (!(isset($Date_Calc_weekdays))) {
+		$Date_Calc_weekdays = array();
+        $now_date = strftime($format,time());
+		for($i=0;$i<7;$i++){
+		    $Date_Calc_weekdays[$i] = strftime('%A', mktime(0, 0, 0, 1, $i, 2001));
+            if ($locale_char_set != 'iso-8859-1') {
+                $Date_Calc_weekdays[$i] = mb_convert_encoding($Date_Calc_weekdays[$i], 
+                                                              $locale_char_set, 'iso-8859-1');
+            }
+		}
+	}
+        return($Date_Calc_weekdays);
     }
 
     // }}}
@@ -2094,7 +2120,7 @@ class Date_Calc
     function compareDates($day1, $month1, $year1, $day2, $month2, $year2)
     {
         $ndays1 = Date_Calc::dateToDays($day1, $month1, $year1);
-        $ndays2 = Date_Calc::dateToDays($day2, $month2, $year2);
+        $ndays2 = 	Date_Calc::dateToDays($day2, $month2, $year2);
         if ($ndays1 == $ndays2) {
             return 0;
         }
