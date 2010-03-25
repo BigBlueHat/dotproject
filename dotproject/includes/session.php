@@ -204,12 +204,16 @@ function dpSessionStart($start_vars = 'AppUI') {
 		$cookie_dir .= '/';
 	}
 	session_set_cookie_params($max_time, $cookie_dir);
-	session_start();
+	
 	if (is_array($start_vars)) {
-		foreach ($start_vars as $key => $var) {
-			$_SESSION[$key] = $var;
+		foreach ($start_vars as $var) {
+			$_SESSION[$var] =  $GLOBALS[$var];
 		}
 	} else if (!(empty($start_vars))) {
-		$_SESSION[$start_vars] = '';
+		$_SESSION[$start_vars] =  $GLOBALS[$start_vars];
 	}
+	
+	session_start();
 }
+
+?>

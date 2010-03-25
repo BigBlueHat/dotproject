@@ -99,6 +99,8 @@ class CMonthCalendar {
  * @param [type] $date
  */
 	 function setDate($date=null) {
+		global $AppUI, $locale_char_set;
+		
 		$this->this_month = new CDate($date);
 		
 		$d = $this->this_month->getDay();
@@ -186,12 +188,13 @@ class CMonthCalendar {
  *
  */
 	 function show() {
+		global $AppUI;
 		$s = '';
 		if ($this->showTitle) {
 			$s .= $this->_drawTitle();
 		}
 		$s .= ('<table border="0" cellspacing="1" cellpadding="2" width="100%" class="' 
-		       . $this->styleMain . "\">\n");
+		       . $AppUI->___($this->styleMain) . "\">\n");
 		if ($this->showDays) {
 			$s .= $this->_drawDays() . "\n";
 		}
@@ -213,12 +216,12 @@ class CMonthCalendar {
 				. (isset($_GET['dialog']) ? '&amp;dialog=1' : ''));
 		
 		$s = ("\n" . '<table border="0" cellspacing="0" cellpadding="3" width="100%" class="' 
-			  . $this->styleTitle . '">');
+			  . $AppUI->___($this->styleTitle) . '">');
 		$s .= "\n\t<tr>";
 		if ($this->showArrows) {
 			$href = ($url . '&amp;date=' . $this->prev_month->format(FMT_TIMESTAMP_DATE) 
-					 . (($this->callback) ? ('&amp;callback=' . $this->callback) : '') 
-					 . ((count($this->highlightedDays) > 0) 
+					 . (($this->callback) ? ('&amp;callback=' . $AppUI->___($this->callback)) : '') 
+			         . ((count($this->highlightedDays) > 0) 
 			            ? ('&amp;uts=' . key($this->highlightedDays)) : ''));
 			$s .= "\n\t\t" . '<td align="left">';
 			$s .= ('<a href="' . $href . '">' 
@@ -235,13 +238,13 @@ class CMonthCalendar {
 		}
 		$s .= ($AppUI->_($this->this_month->format("%B")) . $this->this_month->format(" %Y") 
 		       . (($this->clickMonth) ? '</a>' : ''));
-		$s .= "</th>";
+		$s .= '</th>';
 		
 		if ($this->showArrows) {
 			$href = ($url . '&amp;date='  .$this->next_month->format(FMT_TIMESTAMP_DATE) 
 					 . (($this->callback) ? ('&amp;callback='.$this->callback) : '') 
-					 . ((count($this->highlightedDays)>0) ? ('&amp;uts='.key($this->highlightedDays)) 
-			            : ''));
+					 . ((count($this->highlightedDays)>0) 
+						? ('&amp;uts='.key($this->highlightedDays)) : ''));
 			$s .= "\n\t\t" . '<td align="right">';
 			$s .= ('<a href="' . $href . '">' 
 			       . dPshowImage(dPfindImage('next.gif'), 16, 16, $AppUI->_('next month')) 
@@ -262,7 +265,7 @@ class CMonthCalendar {
 * @return string Returns table a row with the day names
 */
 	function _drawDays() {
-		global $AppUI;
+		global $AppUI, $locale_char_set;
 		
 		setlocale(LC_ALL, 'en_AU'.(($locale_char_set)? ('.' . $locale_char_set) : '.utf8'));
 		$wk = Date_Calc::getCalendarWeek(null, null, null, '%a', LOCALE_FIRST_DAY);
@@ -283,7 +286,7 @@ class CMonthCalendar {
  *
  */
 	 function _drawMain() {
-		GLOBAL $AppUI;
+		global $AppUI, $locale_char_set;
 		$today = new CDate();
 		$today = $today->format('%Y%m%d%w');
 		
@@ -338,10 +341,14 @@ class CMonthCalendar {
 						$html .= ('<a href="javascript:' 
 								  .  $this->dayFunc . "('" . $day . "','" . $this_day->format($df) 
 						          . "')" . '" class="' . $class . '">');
-				    }
+					}
 					$html .=  $d . (($this->dayFunc) ? '</a>' : '');
-					
-				    if ($this->showEvents) {
+
+					if ($this->showWeek) {
+						$html .= $this->_drawBirthdays($day);
+		      }
+      
+					if ($this->showEvents) {
 						$html .= $this->_drawEvents(mb_substr($day, 0, 8));
 					}
 				}
@@ -391,15 +398,50 @@ class CMonthCalendar {
 			$alt = isset($e['alt']) ? str_replace("\n",' ',$e['alt']) : null;
 			
 			$s .= "<div>\n";
-			$s .=  '<span style="' . htmlspecialchars($e['style']) . '">';
-			$s .= (($href) ? ('<a href="' . htmlspecialchars($href) . '" class="event" title="' 
-							  . htmlspecialchars($alt) .'">') : '');
+			$s .=  '<span style="' . $AppUI->___($e['style']) . '">';
+			$s .= (($href) ? ('<a href="' . $AppUI->___($href) . '" class="event" title="' 
+							  . $AppUI->___($alt) .'">') : '');
 			$s .=  $e['text'];
 			$s .= (($href) ? '</a>' : '');
 			$s .=  '</span>';
 			$s .= "</div>\n";
 		}
 		return $s;
+	}
+	
+	public function _drawBirthdays($day) {
+		GLOBAL $AppUI;
+		$html = '';
+		
+		$m = intval(mb_substr($day, 4, 2));
+		$d = intval(mb_substr($day, 6, 2));
+		$y = intval(substr($day, 0, 4));
+		
+		$q = new DBQuery;
+		$q->addTable('contacts', 'con');
+		$q->addQuery('contact_birthday, contact_last_name, contact_first_name, contact_id');
+		if (strlen($d) == 1) {
+			$d = '0'.$d;
+		}
+		if (strlen($m) == 1) {
+			$m = '0'.$m;
+		}
+		$q->addWhere("contact_birthday LIKE '%$m-$d'");
+		$rows = $q->loadList();
+		
+		if ($rows) {
+			$html .= '<div class="event">';
+			foreach ($rows as $row) {
+				$years = $y - substr($row['contact_birthday'], 0, 4);
+				$html .= dPshowImage(dPfindImage('birthday.png', 'calendar'), 16, 16, '');
+				$html .= ('<a href="index.php?m=contacts&a=view&contact_id=' . $row['contact_id'] 
+						  . '">' . $AppUI->___($row["contact_first_name"] . ' ' 
+				                               . $row["contact_last_name"]) . '</a> ('.$years.')');
+			}
+			$html .= '</div>';
+		}
+		
+		return $html;
 	}
 }
 
@@ -853,7 +895,10 @@ class CEvent extends CDpObject {
 		$q = new DBQuery;
 		$q->addTable('user_events', 'ue');
 		$q->addQuery('ue.user_id');
-		$q->addWhere('ue.event_id IN  (' . implode(',', $events) . ')');
+		$q->addWhere('ue.event_id IN (' . implode(',', $events) . ')');
+		if ($this->event_id) {
+			$q->addWhere('NOT(ue.event_id = ' . $this->event_id . ')');
+		}
 		
 		$clashes = $q->loadColumn();
 		$q->clear();

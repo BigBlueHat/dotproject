@@ -46,7 +46,7 @@ if ($search_string != '') {
 
 //$canEdit = getPermission($m, 'edit');
 // retrieve list of records
-$search_string = dPformSafe($search_string, true);
+$search_string = $AppUI->___($search_string);
 
 $perms =& $AppUI->acl();
 $owner_list = array(-1 => $AppUI->_('All', UI_OUTPUT_RAW)) + $perms->getPermittedUsers('companies');
@@ -58,10 +58,10 @@ $owner_combo = arraySelect($owner_list, 'owner_filter_id',
 // setup the title block
 $titleBlock = new CTitleBlock('Companies', 'handshake.png', $m, "$m.$a");
 $titleBlock->addCell(('<form name="searchform" action="?m=companies&amp;search_string=' 
-                      . $search_string . '" method="post">' . "\n" . '<table><tr><td><strong>' 
-                      . $AppUI->_('Search') 
+                      . dPformSafe($search_string) . '" method="post">' . "\n" 
+                      . '<table><tr><td><strong>' . $AppUI->_('Search') 
                       . '</strong><input class="text" type="text" name="search_string" value="' 
-                      . $search_string . '" /><br />' 
+                      .  dPformSafe($search_string) . '" /><br />' 
                       . '<a href="index.php?m=companies&search_string=-1">' 
                       . $AppUI->_('Reset search') . '</a></td><td valign="top"><strong>' 
                       . $AppUI->_('Owner filter').'</strong> ' . $owner_combo 
