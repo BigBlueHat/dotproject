@@ -311,7 +311,6 @@ class CMonthCalendar {
 			}
 			
 			foreach ($week as $day) {
-				$this_day = new CDate($day);
 				$y = intval(mb_substr($day, 0, 4));
 				$m = intval(mb_substr($day, 4, 2));
 				$d = intval(mb_substr($day, 6, 2));
@@ -327,6 +326,7 @@ class CMonthCalendar {
 					$class = 'day';
 				}
 				$day = mb_substr($day, 0, 8);
+				$this_day = new CDate($day);
 				$html .= "\n\t" . '<td class="' . $class . '"';
 				if ($this->showHighlightedDays && isset($this->highlightedDays[$day])) {
 					$html .= ' style="border: 1px solid ' . $this->highlightedDays[$day] . '"';
