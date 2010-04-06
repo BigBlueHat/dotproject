@@ -3,3 +3,4 @@
 .project
 .DS_Store
 dotproject/includes/config.php
+dotproject/files/[0-9]
