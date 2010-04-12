@@ -3,7 +3,7 @@
 // File:        JPG-CONFIG.INC
 // Description: Configuration file for JpGraph library
 // Created:     2004-03-27
-// Ver:         $Id: jpg-config.inc.php 1546 2009-07-10 22:18:57Z ljp $
+// Ver:         $Id: jpg-config.inc.php 1871 2009-09-29 05:56:39Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -53,6 +53,66 @@
 define('CSIMCACHE_DIR','csimcache/');
 define('CSIMCACHE_HTTP_DIR','csimcache/');
 
+
+/** TODO: is all of this still needed as of jpgraph 3.0.7? **/
+//------------------------------------------------------------------------
+// Defines for font setup
+//------------------------------------------------------------------------
+
+// Actual name of the TTF file used together with FF_CHINESE aka FF_BIG5
+// This is the TTF file being used when the font family is specified as
+// either FF_CHINESE or FF_BIG5
+define('TTF_DIR', DP_BASE_DIR . '/lib/fonts/vera/');
+define('FF_CUSTOM', 18);
+/*define('BASE_FONT', 'FreeSans');
+define('CUSTOM_TTF_FONT', BASE_FONT . '.ttf');
+define('CUSTOM_TTF_FONT_BOLD', BASE_FONT.'Bold.ttf');
+define('CUSTOM_TTF_FONT_ITALIC', BASE_FONT.'Oblique.ttf');
+define('CUSTOM_TTF_FONT_BOLDITALIC', BASE_FONT.'BoldOblique.ttf');
+
+DEFINE('CHINESE_TTF_FONT','bkai00mp.ttf');
+
+// Special unicode cyrillic language support
+DEFINE("LANGUAGE_CYRILLIC",true);
+
+// If you are setting this config to true the conversion
+// will assume that the input text is windows 1251, if
+// false it will assume koi8-r
+DEFINE("CYRILLIC_FROM_WINDOWS",true);
+
+// The following constant is used to auto-detect
+// whether cyrillic conversion is really necessary 
+// if enabled. Just replace 'windows-1251' with a variable 
+// containing the input character encoding string 
+// of your application calling jpgraph.
+// A typical such string would be 'UTF-8' or 'utf-8'. 
+// The comparison is case-insensitive.
+// If this charset is not a 'koi8-r' or 'windows-1251'
+// derivate then no conversion is done.
+//
+// This constant can be very important in multi-user
+// multi-language environments where a cyrillic conversion
+// could be needed for some cyrillic people 
+// and resulting in just erraneous conversions 
+// for not-cyrillic language based people.
+//
+// Example: In the free project management
+// software dotproject.net $locale_char_set is dynamically
+// set by the language environment the user has chosen.
+//
+// Usage:  DEFINE('LANGUAGE_CHARSET', $locale_char_set);
+//
+// where $locale_char_set is a GLOBAL (string) variable
+// from the application including JpGraph.
+DEFINE('LANGUAGE_CHARSET', $locale_char_set);
+
+// Japanese TrueType font used with FF_MINCHO, FF_PMINCHO, FF_GOTHIC, FF_PGOTHIC
+DEFINE('MINCHO_TTF_FONT','ipam.ttf');
+DEFINE('PMINCHO_TTF_FONT','ipamp.ttf');
+DEFINE('GOTHIC_TTF_FONT','ipag.ttf');
+DEFINE('PGOTHIC_TTF_FONT','ipagp.ttf');
+*/
+
 //------------------------------------------------------------------------
 // Various JpGraph Settings. Adjust accordingly to your
 // preferences. Note that cache functionality is turned off by
@@ -88,7 +148,7 @@ define('READ_CACHE',true);
 // always return an image even in case of errors.
 define('USE_IMAGE_ERROR_HANDLER',true);
 
-// Should the library examin the global php_errmsg string and convert
+// Should the library examine the global php_errmsg string and convert
 // any error in it to a graphical representation. This is handy for the
 // occasions when, for example, header files cannot be found and this results
 // in the graph not being created and just a 'red-cross' image would be seen.
@@ -105,6 +165,15 @@ define('INSTALL_PHP_ERR_HANDLER',false);
 // (Useful to check if code is future proof.)
 define('ERR_DEPRECATED',true);
 
+// The builtin GD function imagettfbbox() fuction which calculates the bounding box for
+// text using TTF fonts is buggy. By setting this define to true the library
+// uses its own compensation for this bug. However this will give a
+// slightly different visual apparance than not using this compensation.
+// Enabling this compensation will in general give text a bit more space to more
+// truly reflect the actual bounding box which is a bit larger than what the
+// GD function thinks.
+define('USE_LIBRARY_IMAGETTFBBOX',true);
+
 //------------------------------------------------------------------------
 // The following constants should rarely have to be changed !
 //------------------------------------------------------------------------
@@ -114,17 +183,10 @@ define('ERR_DEPRECATED',true);
 // Please note that the Apache user must be a member of the
 // specified group since otherwise it is impossible for Apache
 // to set the specified group.
-define('CACHE_FILE_GROUP','wwwadmin');
+define('CACHE_FILE_GROUP','www');
 
 // What permissions should the cached file have
 // (Set to '' will give the default persmissions for the 'PHP-user')
 define('CACHE_FILE_MOD',0664);
-
-// Decide if we should use the bresenham circle algorithm or the
-// built in Arc(). Bresenham gives better visual apperance of circles
-// but is more CPU intensive and slower then the built in Arc() function
-// in GD. Turned off by default for speed
-define('USE_BRESENHAM',false);
-
 
 ?>
