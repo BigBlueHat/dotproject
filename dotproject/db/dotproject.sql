@@ -705,6 +705,7 @@ INSERT INTO `config` VALUES (0, 'auth_method', 'sql', 'auth', 'select');
 INSERT INTO `config` VALUES (0, 'ldap_host', 'localhost', 'ldap', 'text'); 
 INSERT INTO `config` VALUES (0, 'ldap_port', '389', 'ldap', 'text'); 
 INSERT INTO `config` VALUES (0, 'ldap_version', '3', 'ldap', 'text'); 
+INSERT INTO `config` VALUES (0, 'ldap_start_tls', 'false', 'ldap', 'checkbox');
 INSERT INTO `config` VALUES (0, 'ldap_base_dn', 'dc=saki,dc=com,dc=au', 'ldap', 'text'); 
 INSERT INTO `config` VALUES (0, 'ldap_user_filter', '(uid=%USERNAME%)', 'ldap', 'text'); 
 

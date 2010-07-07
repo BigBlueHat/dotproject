@@ -187,6 +187,7 @@ if (!defined('DP_BASE_DIR')) {
 		var $ldap_host;
 		var $ldap_port;
 		var $ldap_version;
+		var $start_tls;
 		var $base_dn;
 		var $ldap_search_user;
 		var $ldap_search_pass;	
@@ -204,6 +205,7 @@ if (!defined('DP_BASE_DIR')) {
 			$this->ldap_host = $dPconfig["ldap_host"];
 			$this->ldap_port = $dPconfig["ldap_port"];
 			$this->ldap_version = $dPconfig["ldap_version"];
+			$this->start_tls = $dPconfig["ldap_start_tls"];
 			$this->base_dn = $dPconfig["ldap_base_dn"];
 			$this->ldap_search_user = $dPconfig["ldap_search_user"];
 			$this->ldap_search_pass = $dPconfig["ldap_search_pass"];
@@ -227,6 +229,10 @@ if (!defined('DP_BASE_DIR')) {
 				return false;
 			}
 			@ldap_set_option($rs, LDAP_OPT_PROTOCOL_VERSION, $this->ldap_version);
+			if($this->ldap_version == 3 && $this->start_tls)
+			{
+				@ldap_start_tls($rs);
+			}
 			@ldap_set_option($rs, LDAP_OPT_REFERRALS, 0);
 
 			//$ldap_bind_dn = "cn=".$this->ldap_search_user.",".$this->base_dn;
@@ -336,7 +342,7 @@ if (!defined('DP_BASE_DIR')) {
 			$q->addTable('users');
 			$q->addInsert('user_username',$username);
 			$q->addInsert('user_password', $hash_pass);
-			$q->addInsert('user_type', '1');
+			$q->addInsert('user_type', '0');
 			$q->addInsert('user_contact', $c->contact_id);
 			$q->exec();
 			$user_id = $db->Insert_ID();
