@@ -257,7 +257,7 @@ echo $obj->task_contacts; ?>" />
 echo $project->project_color_identifier; ?>" >
 		<font color="<?php echo bestColor($project->project_color_identifier); ?>">
 			<strong><?php echo $AppUI->_('Project'); ?>: <?php 
-echo @$project->project_name; ?></strong>
+echo htmlspecialchars(@$project->project_name); ?></strong>
 		</font>
 	</td>
 </tr>

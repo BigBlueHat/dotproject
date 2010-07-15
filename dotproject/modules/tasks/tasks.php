@@ -521,7 +521,7 @@ echo @$p['project_color_identifier']; ?>">
 	<a href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
 	<span style="color:<?php 
 echo bestColor(@$p['project_color_identifier']); ?>;text-decoration:none;">
-	<strong><?php echo @$p['company_name'].' :: '.@$p['project_name'];?></strong></span></a>
+	<strong><?php echo @$p['company_name'].' :: '.htmlspecialchars(@$p['project_name']);?></strong></span></a>
 	</td>
 	<td width="<?php echo (101 - intval(@$p['project_percent_complete']));?>%">
 	<?php echo (intval(@$p['project_percent_complete']));?>%
@@ -752,5 +752,3 @@ echo $AppUI->_('Close All Tasks'); ?></a>
 
 //echo '<pre>Opened ::'; print_r($tasks_opened); echo '</pre><br />';
 //echo '<pre>Closed ::'; print_r($tasks_closed); echo '</pre><br />';
-
-?>

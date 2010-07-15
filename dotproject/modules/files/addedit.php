@@ -207,7 +207,7 @@ echo file_show_attr(); ?>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Description'); ?>:</td>
 			<td align="left">
 				<textarea name="file_description" class="textarea" style="width:270px"><?php 
-echo $obj->file_description; ?></textarea>
+echo htmlspecialchars($obj->file_description); ?></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -373,5 +373,3 @@ function getHelpdeskFolder() {
 	$q->clear();
 	return intval($ffid);
 }
-
-?>

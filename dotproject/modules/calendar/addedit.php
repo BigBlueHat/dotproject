@@ -283,12 +283,12 @@ function removeUser() {
 	<td width="20%" align="right" nowrap="nowrap"><?php echo $AppUI->_('Event Title');?>:</td>
 	<td width="20%">
 		<input type="text" class="text" size="25" name="event_title" value="<?php 
-echo @$obj->event_title;?>" maxlength="255">
+echo htmlspecialchars(@$obj->event_title);?>" maxlength="255">
 	</td>
 	<td align="left" rowspan=4 valign="top" colspan="2" width="40%">
 	<?php echo $AppUI->_('Description'); ?> :<br/>
 		<textarea class="textarea" name="event_description" rows="5" cols="45"><?php 
-echo $obj->event_description;?></textarea></td>
+echo htmlspecialchars($obj->event_description);?></textarea></td>
 	</td>
 </tr>
 

@@ -47,8 +47,8 @@ echo dPshowImage(dPfindImage(('event' . $row['event_type'] . '.png'), 'calendar'
 			<b><?php echo $AppUI->_($types[$row['event_type']]); ?></b>
 		<td>
 			<a href="?m=calendar&a=view&event_id=<?php 
-echo $row['event_id'];?>" class="event" title="<?php echo $row['event_description']; ?>">
-			<?php echo $row['event_title']; ?>
+echo $row['event_id'];?>" class="event" title="<?php echo htmlspecialchars($row['event_description']); ?>">
+			<?php echo htmlspecialchars($row['event_title']); ?>
 			</a>
 		</td>
 	</tr>

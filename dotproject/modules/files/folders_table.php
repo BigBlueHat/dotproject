@@ -476,14 +476,14 @@ function displayFiles($folder_id) {
 		$file_icon = getIcon($row['file_type']);
 ?>
 			<a href="./fileviewer.php?file_id=<?php echo $row['file_id']; ?>" title="<?php 
-		echo $row['file_description']; ?>"> 
+		echo htmlspecialchars($row['file_description']); ?>"> 
 			<?php 
 		echo dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16');
 ?>
 			&nbsp;<?php echo $row['file_name']; ?> 
 			</a>
 		</td>
-		<td width="20%"><?php echo $row['file_description'];?></td>
+		<td width="20%"><?php echo htmlspecialchars($row['file_description']);?></td>
 		<td width="5%" nowrap="nowrap" align="center">
 			<?php
 		$hidden_table = '';
@@ -649,7 +649,7 @@ function displayFiles($folder_id) {
 		<tr>
 			<td nowrap="8%">
 				<a href="./fileviewer.php?file_id=<?php echo $file['file_id']; 
-?>" title="<?php echo $file['file_description']; ?>">
+?>" title="<?php echo htmlspecialchars($file['file_description']); ?>">
 				<?php
 					echo dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', 
 					                 '16');
@@ -657,7 +657,7 @@ function displayFiles($folder_id) {
 				<?php echo $file['file_name']; ?> 
 				</a>
 			</td>
-			<td width="20%"><?php echo $file['file_description']; ?></td>
+			<td width="20%"><?php echo htmlspecialchars($file['file_description']); ?></td>
 			<td width="5%" nowrap="nowrap" align="center"><?php echo $file['file_version']; ?></td>
 			<td width="10%" nowrap="nowrap" align="center">
 				<?php echo $file_types[$file['file_category']]; ?>

@@ -186,15 +186,17 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
-			<td style="background-color:#<?php echo $obj->project_color_identifier;?>">
-				<font color="<?php echo bestColor($obj->project_color_identifier); ?>">
-					<?php echo @$obj->project_name;?>
-				</font>
+			<td style="border: outset #d1d1cd 1px;background-color:#<?php 
+echo $obj->project_color_identifier; ?>">
+				<?php
+echo ('<span style="color:' . bestColor($obj->project_color_identifier) . '; font-weight:bold">' 
+			      . htmlspecialchars($obj->project_name) . '</span>');
+			?>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
-			<td class="hilite"><strong><?php echo @$obj->task_name;?></strong></td>
+			<td class="hilite"><strong><?php echo htmlspecialchars(@$obj->task_name);?></strong></td>
 		</tr>
 		<?php if ($obj->task_parent != $obj->task_id) { 
 			$obj_parent = new CTask();
@@ -219,7 +221,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Web Address');?>:</td>
-			<td class="hilite" width="300"><a href="<?php echo @$obj->task_related_url;?>" target="task<?php echo $task_id;?>"><?php echo @$obj->task_related_url;?></a></td>
+			<td class="hilite" width="300"><a href="<?php echo urlencode(@$obj->task_related_url);?>" target="task<?php echo $task_id;?>"><?php echo htmlspecialchars(@$obj->task_related_url);?></a></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Milestone');?>:</td>
@@ -341,7 +343,7 @@ function delIt() {
 		 </tr>
 		 <tr>
 		  <td class='hilite' colspan='3'>
-				<?php $newstr = str_replace(chr(10), '<br />', $obj->task_description);echo $newstr;?>
+				<?php $newstr = str_replace(chr(10), '<br />', htmlspecialchars($obj->task_description));echo $newstr;?>
 		  </td>
 		</tr>
 <?php
@@ -506,4 +508,3 @@ if ($tabBox->loadExtras($m, $a)) {
 if ($tabBox_show == 1) {
 	$tabBox->show();
 }
-?>

@@ -32,7 +32,7 @@ function getEventLinks($startPeriod, $endPeriod, &$links, $strMaxLen) {
 			if (($row['event_cwd'] && in_array($date->getDayOfWeek(), $cwd)) 
 			    || !($row['event_cwd'])) {
 				$link['href'] = '?m=calendar&a=view&event_id=' . $row['event_id'];
-				$link['alt'] = $row['event_description'];
+				$link['alt'] = htmlspecialchars($row['event_description']);
 				$link['text'] = (dPshowImage(dPfindImage(('event' . $row['event_type'] . '.png'), 
 														 'calendar'), 16, 16)
 				                 . htmlspecialchars($row['event_title']));
@@ -51,4 +51,3 @@ function getEventLinks($startPeriod, $endPeriod, &$links, $strMaxLen) {
 		}
 	}
 }
-?>

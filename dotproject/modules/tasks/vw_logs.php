@@ -97,10 +97,10 @@ foreach ($logs as $row) {
 		}
 	}
 	$s .= '<td align="center" valign="middle">' . $reference_image . '</td>';
-	$s .= '<td width="30%" style="'.$style.'">' . @$row['task_log_name'] . '</td>';
+	$s .= '<td width="30%" style="'.$style.'">' . htmlspecialchars(@$row['task_log_name']) . '</td>';
 	$s .= ((!(empty($row['task_log_related_url']))) 
-	       ? ('<td><a href="'.@$row['task_log_related_url'] . '" title="' 
-	          . @$row['task_log_related_url'].'">' . $AppUI->_('URL') . '</a></td>') 
+	       ? ('<td><a href="'.urlencode(@$row['task_log_related_url']) . '" title="' 
+	          . htmlspecialchars(@$row['task_log_related_url']).'">' . $AppUI->_('URL') . '</a></td>') 
 	       : '<td></td>');
 	$s .= '<td width="100">' . $row['user_username'] . '</td>';
 	$s .= '<td width="100" align="right">' . sprintf('%.2f', $row['task_log_hours']) . '<br />(';
@@ -112,14 +112,14 @@ foreach ($logs as $row) {
 
 // dylan_cuthbert: auto-transation system in-progress, leave these lines
 	$transbrk = "\n[translation]\n";
-	$descrip = str_replace("\n", '<br />', $row['task_log_description']);
+	$descrip = str_replace("\n", '<br />', htmlspecialchars($row['task_log_description']));
 	$tranpos = mb_strpos($descrip, str_replace("\n", '<br />', $transbrk));
 	if ($tranpos === false) {
 		$s .= $descrip;
 	} else {
 		$descrip = mb_substr($descrip, 0, $tranpos);
-		$tranpos = mb_strpos($row['task_log_description'], $transbrk);
-		$transla = mb_substr($row['task_log_description'], $tranpos + mb_strlen($transbrk));
+		$tranpos = mb_strpos(htmlspecialchars($row['task_log_description']), $transbrk);
+		$transla = mb_substr(htmlspecialchars($row['task_log_description']), $tranpos + mb_strlen($transbrk));
 		$transla = trim(str_replace("'", '"', $transla));
 		$s .= ($descrip.'<div style="font-weight: bold; text-align: right"><a title="' . $transla 
 		       . '" class="hilite">["' . $AppUI->_('translation') . '"]</a></div>');

@@ -101,7 +101,7 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Event Title');?>:</td>
-			<td class="hilite" width="100%"><?php echo $obj->event_title;?></td>
+			<td class="hilite" width="100%"><?php echo htmlspecialchars($obj->event_title);?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
@@ -147,7 +147,7 @@ echo ($AppUI->_($recurs[$obj->event_recurs]) . ' (' . $obj->event_times_recuring
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo nl2br(strip_tags($obj->event_description));?>&nbsp;
+				<?php echo nl2br(htmlspecialchars($obj->event_description));?>&nbsp;
 			</td>
 		</tr>
 		</table>

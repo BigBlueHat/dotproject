@@ -347,14 +347,14 @@ foreach ($files as $file_row) {
 	$file_icon = getIcon($file_row['file_type']);
 ?>
 		<a href="./fileviewer.php?file_id=<?php 
-	echo $latest_file['file_id']; ?>" title="<?php echo $latest_file['file_description']; ?>">
+	echo $latest_file['file_id']; ?>" title="<?php echo htmlspecialchars($latest_file['file_description']); ?>">
 		<?php
 	echo (dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16') . "\n" 
 	      . '&nbsp;' . $filename);
 ?>
 	  </a>
 	</td>
-	<td width="20%"><?php echo $latest_file['file_description']; ?></td>
+	<td width="20%"><?php echo htmlspecialchars($latest_file['file_description']); ?></td>
 	<td width="5%" nowrap="nowrap" align="center">
 		<?php 
 	echo $file_row['file_lastversion'];
@@ -453,14 +453,14 @@ foreach ($files as $file_row) {
 		</td>
 		<td nowrap="8%">
 			<a href="./fileviewer.php?file_id=<?php echo $file['file_id']; ?>" title="<?php 
-				echo $file['file_description']; ?>">
+				echo htmlspecialchars($file['file_description']); ?>">
 			<?php 
 				echo dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16');
 ?>
 			<?php echo $file['file_name']; ?> 
 			</a>
 		</td>
-		<td width="20%"><?php echo $file['file_description']; ?></td>
+		<td width="20%"><?php echo htmlspecialchars($file['file_description']); ?></td>
 		<td width="5%" nowrap="nowrap" align="center"><?php echo $file['file_version']; ?></td>
 		<td width="10%" nowrap="nowrap" align="center">
 			<?php echo $file_types[$file['file_category']]; ?>
@@ -516,4 +516,3 @@ foreach ($files as $file_row) {
 </table>
 <?php
 shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
-?>

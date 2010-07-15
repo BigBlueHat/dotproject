@@ -173,7 +173,7 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 			}
 			
 			$href = "?m=calendar&a=view&event_id=".$row['event_id'];
-			$alt = $row['event_description'];
+			$alt = htmlspecialchars($row['event_description']);
 
 			$html .= "\n\t" .'<td class="event" rowspan="' . $rows . '" valign="top">';
 
@@ -206,4 +206,3 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 
 $html .= '</table>';
 echo $html;
-?>

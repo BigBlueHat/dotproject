@@ -230,7 +230,7 @@ echo ($AppUI->_('doDelete', UI_OUTPUT_JS) . ' ' . $AppUI->_('Project', UI_OUTPUT
 echo $obj->project_color_identifier; ?>" colspan="2">
 	<?php
 echo ('<span style="color:' . bestColor($obj->project_color_identifier) . '; font-weight:bold">' 
-      . $obj->project_name . '</span>');
+      . htmlspecialchars($obj->project_name) . '</span>');
 	?>
 	</td>
 </tr>
@@ -240,7 +240,7 @@ echo ('<span style="color:' . bestColor($obj->project_color_identifier) . '; fon
 		<strong><?php echo $AppUI->_('Details'); ?></strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Company'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company'); ?>:</td>
             <td class="hilite" width="100%"><?php 
 echo (((getPermission('companies', 'view', $obj->project_company)) 
        ? ('<a href="?m=companies&a=view&company_id=' . $obj->project_company . '">') : '') 
@@ -249,7 +249,7 @@ echo (((getPermission('companies', 'view', $obj->project_company))
 ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Internal Company'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Internal Company'); ?>:</td>
             <td class="hilite" width="100%"><?php 
 echo (((getPermission('companies', 'view', $obj->project_company_internal)) 
        ? ('<a href="?m=companies&a=view&company_id=' . $obj->project_company_internal . '">') : '') 
@@ -259,20 +259,20 @@ echo (((getPermission('companies', 'view', $obj->project_company_internal))
 ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Short Name'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Short Name'); ?>:</td>
 			<td class="hilite"><?php 
 echo htmlspecialchars(@$obj->project_short_name, ENT_QUOTES); ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Start Date'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date'); ?>:</td>
 			<td class="hilite"><?php echo $start_date ? $start_date->format($df) : '-'; ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Target End Date'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target End Date'); ?>:</td>
 			<td class="hilite"><?php echo $end_date ? $end_date->format($df) : '-'; ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Actual End Date'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual End Date'); ?>:</td>
 			<td class="hilite"><?php 
 if ($project_id > 0) {
 	echo (($actual_end_date) 
@@ -287,23 +287,23 @@ if ($project_id > 0) {
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Target Budget'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget'); ?>:</td>
 			<td class="hilite"><?php echo $dPconfig['currency_symbol'] ?><?php 
 echo @$obj->project_target_budget; ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Project Owner'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner'); ?>:</td>
 			<td class="hilite"><?php echo $obj->user_name; ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('URL'); ?>:</td>
-			<td class="hilite"><a href="<?php echo @$obj->project_url; ?>" target="_new"><?php 
-echo @$obj->project_url; ?></A></td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL'); ?>:</td>
+			<td class="hilite"><a href="<?php echo urlencode(@$obj->project_url); ?>" target="_new"><?php 
+echo htmlspecialchars(@$obj->project_url); ?></A></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Staging URL'); ?>:</td>
-			<td class="hilite"><a href="<?php echo @$obj->project_demo_url; ?>" target="_new"><?php 
-echo @$obj->project_demo_url; ?></a></td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Staging URL'); ?>:</td>
+			<td class="hilite"><a href="<?php echo urlencode(@$obj->project_demo_url); ?>" target="_new"><?php 
+echo htmlspecialchars(@$obj->project_demo_url); ?></a></td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -320,7 +320,7 @@ echo @$obj->project_demo_url; ?></a></td>
 			<table cellspacing="0" cellpadding="2" border="0" width="100%">
 			<tr>
 				<td class="hilite">
-					<?php echo str_replace(chr(10), "<br>", $obj->project_description); ?>
+					<?php echo str_replace(chr(10), '<br />', htmlspecialchars($obj->project_description)); ?>
 				</td>
 			</tr>
 			</table>
@@ -332,36 +332,36 @@ echo @$obj->project_demo_url; ?></a></td>
 		<strong><?php echo $AppUI->_('Summary'); ?></strong><br />
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Status'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Status'); ?>:</td>
 			<td class="hilite" width="100%"><?php 
 echo $AppUI->_($pstatus[$obj->project_status]); ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Priority'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Priority'); ?>:</td>
 			<td class="hilite" width="100%" style="background-color:<?php 
 echo $projectPriorityColor[$obj->project_priority]?>"><?php 
 echo $AppUI->_($projectPriority[$obj->project_priority]); ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Type'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type'); ?>:</td>
 			<td class="hilite" width="100%"><?php 
 echo $AppUI->_($ptype[$obj->project_type]); ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Progress'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Progress'); ?>:</td>
 			<td class="hilite" width="100%"><?php 
 printf('%.1f%%', $obj->project_percent_complete); ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Worked Hours'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Worked Hours'); ?>:</td>
 			<td class="hilite" width="100%"><?php echo $worked_hours ?></td>
 		</tr>	
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Scheduled Hours'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Scheduled Hours'); ?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_hours ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Project Hours'); ?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Hours'); ?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_project_hours ?></td>
 		</tr>				
 		<?php
@@ -481,4 +481,3 @@ $f = 'all';
 $min_view = true;
 
 $tabBox->show();
-?>

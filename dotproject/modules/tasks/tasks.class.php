@@ -2436,7 +2436,7 @@ function showtask(&$a, $level=0, $is_opened = true, $today_view = false, $hideOp
 	
 	if ($a['task_milestone'] > 0) {
 		$s .= ('&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a['task_id'] . '" ' 
-			   . $alt . '>' . '<b>' . $a['task_name'] . '</b></a>' 
+			   . $alt . '>' . '<strong>' . htmlspecialchars($a['task_name']) . '</strong></a>' 
 			   . '<img src="./images/icons/milestone.gif" border="0"></td>');
 	} else if ($a['task_dynamic'] == 1 || count($task_obj->getChildren()) ) {
 		if (! ($today_view || $hideOpenCloseLink)) {
@@ -2448,10 +2448,10 @@ function showtask(&$a, $level=0, $is_opened = true, $today_view = false, $hideOp
 				   . ' border="0" /></a>');
 		}
 		$s .= ('&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a['task_id'] . '" ' 
-			   . $alt . '>' . (($a['task_dynamic'] == 1) ? '<b><i>' : '') . $a['task_name'] . (($a['task_dynamic'] == 1) ? '</i></b>' : '') . '</a></td>');
+			   . $alt . '>' . (($a['task_dynamic'] == 1) ? '<strong><em>' : '') . htmlspecialchars($a['task_name']) . (($a['task_dynamic'] == 1) ? '</em></strong>' : '') . '</a></td>');
 	} else {
 	  $s .= ('&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a['task_id'] . '" ' 
-			 . $alt . '>' . $a['task_name'] . '</a></td>');
+			 . $alt . '>' . htmlspecialchars($a['task_name']) . '</a></td>');
 	}
 	
 	if ($today_view) { // Show the project name
@@ -2717,5 +2717,3 @@ function sort_by_item_title($title, $item_name, $item_type) {
 	
 	echo '</a>';
 }
-
-?>
