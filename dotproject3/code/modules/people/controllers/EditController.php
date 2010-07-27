@@ -86,9 +86,7 @@ class People_EditController extends DP_Controller_Action_Edit {
 			
 			$this->_redirector = $this->_helper->getHelper('Redirector');
 			$this->_redirector->setGoto('index', 'index', 'people');
-            $this->_redirector->redirectAndExit();    
+			$this->_redirector->redirectAndExit();    
 		}
 	}
-	
 }
-?>
